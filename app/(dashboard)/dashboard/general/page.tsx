@@ -1,14 +1,15 @@
 "use client";
 
-import { updateAccount } from "@/app/(login)/actions";
+import { updateAccount, deleteAccount } from "@/app/(login)/actions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { User } from "@/lib/db/schema";
 import { customerPortalAction } from "@/lib/payments/actions";
-import { Loader2 } from "lucide-react";
-import { Suspense, useActionState } from "react";
+import { Loader2, Trash2, Download } from "lucide-react";
+import { Suspense, useActionState, useState } from "react";
+import ConfirmDialog from "@/components/ui/confirm-dialog";
 import { TbCrown } from "react-icons/tb";
 import useSWR from "swr";
 
@@ -16,6 +17,12 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 type ActionState = {
   name?: string;
+  error?: string;
+  success?: string;
+};
+
+type DeleteState = {
+  password?: string;
   error?: string;
   success?: string;
 };
@@ -79,6 +86,13 @@ export default function GeneralPage() {
     {}
   );
 
+  const [deleteState, deleteAction, isDeletePending] = useActionState<
+    DeleteState,
+    FormData
+  >(deleteAccount, {});
+
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+
   return (
     <section className="flex-1 p-4 lg:p-8">
       {/* Subscription card moved from Profile */}
@@ -116,6 +130,86 @@ export default function GeneralPage() {
           </form>
         </CardContent>
       </Card>
+
+      <Card className="mt-6">
+        <CardHeader className="pt-6">
+          <CardTitle>Account Actions</CardTitle>
+        </CardHeader>
+        <CardContent className="py-6">
+          <p className="text-sm text-gray-500 mb-4">
+            Export your data or permanently delete your account.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <form method="get" action="/api/user/export">
+              <Button
+                type="submit"
+                className="bg-white border border-gray-200 text-gray-900 flex items-center gap-2"
+              >
+                <Download className="h-4 w-4" />
+                Export Data
+              </Button>
+            </form>
+
+            <div className="ml-0 sm:ml-auto">
+              <Button
+                variant="destructive"
+                className="bg-red-600 hover:bg-red-700 flex items-center gap-2"
+                onClick={() => setDeleteModalOpen(true)}
+              >
+                <Trash2 className="h-4 w-4" />
+                Delete Account
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <ConfirmDialog
+        open={deleteModalOpen}
+        title="Delete Account"
+        description="Account deletion is non-reversible. Please enter your password to confirm."
+        onClose={() => setDeleteModalOpen(false)}
+      >
+        <form action={deleteAction} className="space-y-4">
+          <div>
+            <Label htmlFor="delete-password" className="mb-2">
+              Confirm Password
+            </Label>
+            <Input
+              id="delete-password"
+              name="password"
+              type="password"
+              required
+              minLength={8}
+              maxLength={100}
+              defaultValue={deleteState.password}
+            />
+          </div>
+          {deleteState.error && (
+            <p className="text-red-500 text-sm">{deleteState.error}</p>
+          )}
+          <div className="flex justify-end">
+            <Button
+              type="submit"
+              variant="destructive"
+              className="bg-red-600 hover:bg-red-700 flex items-center gap-2"
+              disabled={isDeletePending}
+            >
+              {isDeletePending ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Deleting...
+                </>
+              ) : (
+                <>
+                  <Trash2 className="h-4 w-4" />
+                  Delete Account
+                </>
+              )}
+            </Button>
+          </div>
+        </form>
+      </ConfirmDialog>
     </section>
   );
 }
