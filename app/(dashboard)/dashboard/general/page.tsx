@@ -1,15 +1,15 @@
 "use client";
 
-import { updateAccount, deleteAccount } from "@/app/(login)/actions";
+import { deleteAccount, updateAccount } from "@/app/(login)/actions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import ConfirmDialog from "@/components/ui/confirm-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { User } from "@/lib/db/schema";
 import { customerPortalAction } from "@/lib/payments/actions";
-import { Loader2, Trash2, Download } from "lucide-react";
+import { Download, Loader2, Trash2 } from "lucide-react";
 import { Suspense, useActionState, useState } from "react";
-import ConfirmDialog from "@/components/ui/confirm-dialog";
 import { TbCrown } from "react-icons/tb";
 import useSWR from "swr";
 

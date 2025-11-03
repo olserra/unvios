@@ -1,10 +1,10 @@
 "use server";
 
-import { NextResponse } from "next/server";
-import { getUser } from "@/lib/db/queries";
 import { db } from "@/lib/db/drizzle";
+import { getUser } from "@/lib/db/queries";
 import { memories } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
+import { NextResponse } from "next/server";
 
 export async function GET() {
   const user = await getUser();
