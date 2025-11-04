@@ -55,4 +55,10 @@ Always check `.env` for required variables before using API routes that call ext
 - If adding a new env var, document it near the top of `README.md` and add fallbacks where appropriate.
 - Tests are not present; prefer adding small unit-like checks in `scripts/` when modifying DB or embedding behavior.
 
+### Architecture changes & ADRs
+
+- For any larger architecture or infra change (for example: adding CI workflows, changing the DB schema, switching embedding/LLM providers, introducing a major new service, or changing memory storage formats), create an ADR in `docs/adr/` **before** or alongside the code change. Use a timestamped filename like `YYYY-MM-DD-brief-title.md`.
+- Each ADR should include: Date, Status, Context (what changed and why), Decision (what you chose), Rationale (trade-offs), Migration/rollback steps (if applicable), and Next steps. Keep ADRs short and actionable.
+- Documenting major decisions in ADRs makes reviews and rollbacks much easier and helps keep the repository history understandable.
+
 If anything above is unclear or you want me to expand examples (e.g., show exact regex or SQL snippets to modify), tell me which area to expand and I will iterate.

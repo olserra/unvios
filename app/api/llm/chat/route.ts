@@ -30,6 +30,9 @@ function normalizeOutput(json: any) {
   return output;
 }
 
+// Exported helper to parse memory annotations from LLM output. Tests target this.
+// parseMemories is now provided by `lib/memoryParser.ts`
+
 function buildPromptFromMemories(memRows: any[], userQuestion: string) {
   if (memRows.length === 0) return userQuestion;
 

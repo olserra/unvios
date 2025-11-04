@@ -1,0 +1,128 @@
+name: CI — tests
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+
+jobs:
+    test:
+        name: Run unit tests
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Use Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "20"
+                  cache: "pnpm"
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v2
+              with:
+                  version: 8
+
+            - name: Restore pnpm store cache
+              uses: actions/cache@v4
+              with:
+                path: |
+                  ~/.pnpm-store
+                  .pnpm-store
+                  node_modules/.pnpm
+                  ~/.local/share/pnpm/store
+                key: pnpm-store-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+                restore-keys: |
+                  pnpm-store-${{ runner.os }}-
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Save pnpm store cache
+              if: always()
+              uses: actions/cache@v4
+              with:
+                path: |
+                  ~/.pnpm-store
+                  .pnpm-store
+                  node_modules/.pnpm
+                  ~/.local/share/pnpm/store
+                key: pnpm-store-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+            - name: Save .next cache
+              if: always()
+              uses: actions/cache@v4
+              with:
+                path: .next/cache
+                key: next-cache-${{ runner.os }}-${{ hashFiles('**/package.json') }}
+
+            - name: Type-check (tsc)
+              run: pnpm exec tsc --noEmit -p tsconfig.ci.json
+
+            - name: Run tests
+              run: pnpm test -- --reporter verbose
+    build:
+        name: Build (after tests)
+        runs-on: ubuntu-latest
+        needs: test
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Use Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+                  cache: 'pnpm'
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v2
+              with:
+                  version: 8
+
+            - name: Restore pnpm store cache
+              uses: actions/cache@v4
+              with:
+                path: |
+                  ~/.pnpm-store
+                  .pnpm-store
+                  node_modules/.pnpm
+                  ~/.local/share/pnpm/store
+                key: pnpm-store-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+                restore-keys: |
+                  pnpm-store-${{ runner.os }}-
+
+            - name: Restore .next cache
+              uses: actions/cache@v4
+              with:
+                path: .next/cache
+                key: next-cache-${{ runner.os }}-${{ hashFiles('**/package.json') }}
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Type-check (tsc)
+              run: pnpm exec tsc --noEmit -p tsconfig.ci.json
+
+            - name: Build (Next)
+              run: pnpm build
+
+            - name: Save pnpm store cache
+              if: always()
+              uses: actions/cache@v4
+              with:
+                path: |
+                  ~/.pnpm-store
+                  .pnpm-store
+                  node_modules/.pnpm
+                  ~/.local/share/pnpm/store
+                key: pnpm-store-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+            - name: Save .next cache
+              if: always()
+              uses: actions/cache@v4
+              with:
+                path: .next/cache
+                key: next-cache-${{ runner.os }}-${{ hashFiles('**/package.json') }}
