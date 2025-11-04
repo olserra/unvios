@@ -28,14 +28,14 @@ jobs:
             - name: Restore pnpm store cache
               uses: actions/cache@v4
               with:
-                path: |
-                  ~/.pnpm-store
-                  .pnpm-store
-                  node_modules/.pnpm
-                  ~/.local/share/pnpm/store
-                key: pnpm-store-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-                restore-keys: |
-                  pnpm-store-${{ runner.os }}-
+                  path: |
+                      ~/.pnpm-store
+                      .pnpm-store
+                      node_modules/.pnpm
+                      ~/.local/share/pnpm/store
+                  key: pnpm-store-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  restore-keys: |
+                      pnpm-store-${{ runner.os }}-
 
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
@@ -44,19 +44,19 @@ jobs:
               if: always()
               uses: actions/cache@v4
               with:
-                path: |
-                  ~/.pnpm-store
-                  .pnpm-store
-                  node_modules/.pnpm
-                  ~/.local/share/pnpm/store
-                key: pnpm-store-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  path: |
+                      ~/.pnpm-store
+                      .pnpm-store
+                      node_modules/.pnpm
+                      ~/.local/share/pnpm/store
+                  key: pnpm-store-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
 
             - name: Save .next cache
               if: always()
               uses: actions/cache@v4
               with:
-                path: .next/cache
-                key: next-cache-${{ runner.os }}-${{ hashFiles('**/package.json') }}
+                  path: .next/cache
+                  key: next-cache-${{ runner.os }}-${{ hashFiles('**/package.json') }}
 
             - name: Type-check (tsc)
               run: pnpm exec tsc --noEmit -p tsconfig.ci.json
@@ -74,8 +74,8 @@ jobs:
             - name: Use Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: '20'
-                  cache: 'pnpm'
+                  node-version: "20"
+                  cache: "pnpm"
 
             - name: Setup pnpm
               uses: pnpm/action-setup@v2
@@ -85,20 +85,20 @@ jobs:
             - name: Restore pnpm store cache
               uses: actions/cache@v4
               with:
-                path: |
-                  ~/.pnpm-store
-                  .pnpm-store
-                  node_modules/.pnpm
-                  ~/.local/share/pnpm/store
-                key: pnpm-store-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-                restore-keys: |
-                  pnpm-store-${{ runner.os }}-
+                  path: |
+                      ~/.pnpm-store
+                      .pnpm-store
+                      node_modules/.pnpm
+                      ~/.local/share/pnpm/store
+                  key: pnpm-store-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  restore-keys: |
+                      pnpm-store-${{ runner.os }}-
 
             - name: Restore .next cache
               uses: actions/cache@v4
               with:
-                path: .next/cache
-                key: next-cache-${{ runner.os }}-${{ hashFiles('**/package.json') }}
+                  path: .next/cache
+                  key: next-cache-${{ runner.os }}-${{ hashFiles('**/package.json') }}
 
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
@@ -113,16 +113,16 @@ jobs:
               if: always()
               uses: actions/cache@v4
               with:
-                path: |
-                  ~/.pnpm-store
-                  .pnpm-store
-                  node_modules/.pnpm
-                  ~/.local/share/pnpm/store
-                key: pnpm-store-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  path: |
+                      ~/.pnpm-store
+                      .pnpm-store
+                      node_modules/.pnpm
+                      ~/.local/share/pnpm/store
+                  key: pnpm-store-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
 
             - name: Save .next cache
               if: always()
               uses: actions/cache@v4
               with:
-                path: .next/cache
-                key: next-cache-${{ runner.os }}-${{ hashFiles('**/package.json') }}
+                  path: .next/cache
+                  key: next-cache-${{ runner.os }}-${{ hashFiles('**/package.json') }}

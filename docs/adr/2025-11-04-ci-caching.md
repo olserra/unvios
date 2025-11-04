@@ -13,6 +13,7 @@ Installing dependencies in CI can be slow and causes longer feedback loops for c
 Add restore/save cache steps around `pnpm install` in the GitHub Actions workflow `.github/workflows/test.yml`.
 
 Implementation details:
+
 - Use `actions/cache@v4` to cache the pnpm store directory (`~/.pnpm-store`).
 - Cache key: `pnpm-store-<OS>-<hash(pnpm-lock.yaml)>`. Use restore-keys to allow partial matches.
 - Restore cache before `pnpm install` and save afterwards.

@@ -11,6 +11,7 @@ Unit tests are useful, but a PR may still introduce changes that break the produ
 ## Decision
 
 Add a `build` job to the GitHub Actions workflow `.github/workflows/test.yml` that:
+
 - Runs after the `test` job (declared with `needs: test`).
 - Restores the pnpm store cache and `.next/cache` to speed the build.
 - Installs dependencies (`pnpm install --frozen-lockfile`) and runs a TypeScript check.

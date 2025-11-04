@@ -11,6 +11,7 @@ The initial CI caching added pnpm store caching (`~/.pnpm-store` / `.pnpm-store`
 ## Decision
 
 Extend the GitHub Actions cache paths to include:
+
 - `node_modules/.pnpm` — pnpm virtual store linked inside `node_modules` (project-local store)
 - `~/.local/share/pnpm/store` — alternate global pnpm store location used by some pnpm setups
 
