@@ -57,13 +57,13 @@ export default function Footer() {
             <h4 className="font-semibold text-white mb-4">Resources</h4>
             <ul className="space-y-3">
               <li>
-                <span className="text-white transition-colors">
-                  Documentation
-                </span>
+                <Link href="/help" className="text-white transition-colors">
+                  Help Center
+                </Link>
               </li>
               <li>
                 <span className="text-white transition-colors">
-                  Help Center
+                  Documentation
                 </span>
               </li>
               <li>
@@ -85,11 +85,6 @@ export default function Footer() {
               <li>
                 <a href="/terms" className="text-white transition-colors">
                   Terms
-                </a>
-              </li>
-              <li>
-                <a href="/licenses" className="text-white transition-colors">
-                  Licenses
                 </a>
               </li>
             </ul>
