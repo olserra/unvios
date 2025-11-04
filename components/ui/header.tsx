@@ -103,6 +103,7 @@ function UserMenu() {
         <div className="flex items-center">
           <span
             aria-label="Open menu"
+            data-onboarding="mobile-menu"
             className="p-2 rounded-md lg:hidden text-gray-700 hover:bg-gray-100 cursor-pointer"
           >
             <HiOutlineMenuAlt3 className="h-6 w-6" />

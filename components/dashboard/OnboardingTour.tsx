@@ -21,27 +21,24 @@ export default function OnboardingTour({ onComplete }: OnboardingTourProps) {
     // Prevent body scroll while onboarding is active
     document.body.style.overflow = "hidden";
 
-    const findVisibleMenuIcon = () => {
-      const menuIcons = document.querySelectorAll(
-        'span[aria-label="Open menu"]'
-      );
-      for (const icon of menuIcons) {
-        const styles = globalThis.getComputedStyle(icon);
-        if (styles.display !== "none") {
-          return icon;
-        }
-      }
-      return null;
-    };
-
     const updateHighlight = () => {
       const isMobile = globalThis.innerWidth < 1024; // lg breakpoint
       let targetElement: Element | null = null;
 
       if (currentStep === 1) {
-        targetElement = isMobile
-          ? findVisibleMenuIcon()
-          : document.querySelector('a[href="/dashboard/chat"]');
+        if (isMobile) {
+          // Try multiple selectors to find the mobile menu
+          targetElement =
+            document.querySelector('span[data-onboarding="mobile-menu"]') ||
+            document.querySelector(
+              String.raw`[aria-label="Open menu"].lg\:hidden`
+            ) ||
+            document.querySelector(
+              String.raw`.lg\:hidden [aria-label="Open menu"]`
+            );
+        } else {
+          targetElement = document.querySelector('a[href="/dashboard/chat"]');
+        }
       } else if (currentStep === 2) {
         targetElement = document.querySelector(
           'button[data-onboarding="add-memory"]'
@@ -59,8 +56,8 @@ export default function OnboardingTour({ onComplete }: OnboardingTourProps) {
       }
     };
 
-    // Small delay to ensure DOM is ready
-    const timeoutId = setTimeout(updateHighlight, 100);
+    // Longer delay to ensure DOM is fully rendered
+    const timeoutId = setTimeout(updateHighlight, 200);
     window.addEventListener("resize", updateHighlight);
 
     return () => {
