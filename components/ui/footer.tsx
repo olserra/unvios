@@ -34,9 +34,9 @@ export default function Footer() {
             <h4 className="font-semibold text-white mb-4">Company</h4>
             <ul className="space-y-3">
               <li>
-                <a href="#" className="text-white transition-colors">
+                <Link href="/about" className="text-white transition-colors">
                   About
-                </a>
+                </Link>
               </li>
               <li>
                 <a href="#" className="text-white transition-colors">
@@ -110,9 +110,15 @@ export default function Footer() {
           </div>
         </div>
         <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-orange-600"></div>
-            <span className="text-xl font-bold text-white">Memora</span>
+          <div className="flex flex-col md:flex-row items-center gap-2">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-orange-600"></div>
+              <span className="text-xl font-bold text-white">Memora</span>
+            </div>
+            <div className="text-xs text-gray-400 md:ml-3">
+              Science-backed memory augmentation — neuro-inspired indexing, RAG,
+              and private vector search
+            </div>
           </div>
           <div className="text-sm text-gray-400">
             © 2025 Memora. All rights reserved.
