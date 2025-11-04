@@ -47,7 +47,9 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <span className="text-white transition-colors">Contact</span>
+                <Link href="/contact" className="text-white transition-colors">
+                  Contact
+                </Link>
               </li>
             </ul>
           </div>
