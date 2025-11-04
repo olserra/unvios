@@ -2,7 +2,7 @@ import { getPostBySlug } from "@/lib/blog";
 import Link from "next/link";
 import ClientFallback from "./ClientFallback";
 
-type Props = { params: { slug: string } };
+type Props = { params: Promise<{ slug: string }> };
 
 function formatDate(iso?: string) {
   if (!iso) return "";
@@ -13,14 +13,15 @@ function formatDate(iso?: string) {
   });
 }
 
-export default function PostPage({ params }: Props) {
-  const post = getPostBySlug(params.slug);
+export default async function PostPage({ params }: Props) {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
 
   if (!post) {
     return (
       // Server couldn't resolve the post — render a client fallback that
       // attempts to extract the slug from window.location and match posts.
-      <ClientFallback params={params} />
+      <ClientFallback />
     );
   }
 

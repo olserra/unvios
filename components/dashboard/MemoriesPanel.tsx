@@ -49,8 +49,10 @@ export default function MemoriesPanel() {
   const [editorOpen, setEditorOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
 
-  // Check for empty state testing flag
-  const urlParams = new URLSearchParams(globalThis.location.search);
+  // Check for empty state testing flag (only in browser)
+  const urlParams = globalThis.window?.location
+    ? new URLSearchParams(globalThis.window.location.search)
+    : new URLSearchParams();
   const forceEmptyState = urlParams.get("empty") === "true";
   const forceOnboarding = urlParams.get("onboarding") === "true";
 
@@ -61,7 +63,9 @@ export default function MemoriesPanel() {
   // Check if user should see onboarding
   useEffect(() => {
     // Check for dev/testing flag in URL
-    const urlParams = new URLSearchParams(globalThis.location.search);
+    const urlParams = globalThis.window?.location
+      ? new URLSearchParams(globalThis.window.location.search)
+      : new URLSearchParams();
     const forceOnboarding = urlParams.get("onboarding") === "true";
 
     if (forceOnboarding) {

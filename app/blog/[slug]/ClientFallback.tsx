@@ -14,7 +14,7 @@ type Post = {
   imageAlt?: string;
 };
 
-export default function ClientFallback({ params }: { params: any }) {
+export default function ClientFallback() {
   const [post, setPost] = useState<Post | null>(null);
   const [tried, setTried] = useState(false);
 
@@ -53,12 +53,6 @@ export default function ClientFallback({ params }: { params: any }) {
           <div className="mt-4 text-left text-sm text-gray-500">
             <div className="mb-2">
               <strong>Debug (client):</strong>
-            </div>
-            <div className="mb-2">
-              <div className="font-medium">Params received:</div>
-              <pre className="whitespace-pre-wrap text-xs bg-gray-100 p-2 rounded mt-1 text-gray-700">
-                {JSON.stringify(params, null, 2)}
-              </pre>
             </div>
             <div>
               <div className="font-medium">Available slugs:</div>
