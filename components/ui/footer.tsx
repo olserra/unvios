@@ -88,11 +88,6 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="/privacy" className="text-white transition-colors">
-                  Cookie Policy
-                </a>
-              </li>
-              <li>
                 <a href="/licenses" className="text-white transition-colors">
                   Licenses
                 </a>
