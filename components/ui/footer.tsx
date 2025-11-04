@@ -1,6 +1,9 @@
 import Link from "next/link";
+// using simple emoji for social icons to avoid deprecated lucide exports
 
 export default function Footer() {
+  const year = new Date().getFullYear();
+
   return (
     <footer className="bg-gray-900 text-gray-300 py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -23,11 +26,6 @@ export default function Footer() {
                   Security
                 </Link>
               </li>
-              <li>
-                <a href="#" className="text-white transition-colors">
-                  Roadmap
-                </a>
-              </li>
             </ul>
           </div>
           <div>
@@ -39,19 +37,15 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <a href="#" className="text-white transition-colors">
+                <Link href="/blog" className="text-white transition-colors">
                   Blog
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-white transition-colors">
-                  Careers
-                </a>
+                <span className="text-white transition-colors">Careers</span>
               </li>
               <li>
-                <a href="#" className="text-white transition-colors">
-                  Contact
-                </a>
+                <span className="text-white transition-colors">Contact</span>
               </li>
             </ul>
           </div>
@@ -59,24 +53,20 @@ export default function Footer() {
             <h4 className="font-semibold text-white mb-4">Resources</h4>
             <ul className="space-y-3">
               <li>
-                <a href="#" className="text-white transition-colors">
+                <span className="text-white transition-colors">
                   Documentation
-                </a>
+                </span>
               </li>
               <li>
-                <a href="#" className="text-white transition-colors">
+                <span className="text-white transition-colors">
                   Help Center
-                </a>
+                </span>
               </li>
               <li>
-                <a href="#" className="text-white transition-colors">
-                  API
-                </a>
+                <span className="text-white transition-colors">API</span>
               </li>
               <li>
-                <a href="#" className="text-white transition-colors">
-                  Status
-                </a>
+                <span className="text-white transition-colors">Status</span>
               </li>
             </ul>
           </div>
@@ -89,22 +79,19 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="text-white transition-colors">
+                <a href="/terms" className="text-white transition-colors">
                   Terms
-                </Link>
+                </a>
               </li>
               <li>
-                <Link
-                  href="/cookie-policy"
-                  className="text-white transition-colors"
-                >
+                <a href="/privacy" className="text-white transition-colors">
                   Cookie Policy
-                </Link>
+                </a>
               </li>
               <li>
-                <Link href="/licenses" className="text-white transition-colors">
+                <a href="/licenses" className="text-white transition-colors">
                   Licenses
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
@@ -120,34 +107,50 @@ export default function Footer() {
               and private vector search
             </div>
           </div>
-          <div className="text-sm text-gray-400">
-            © 2025 Memora. All rights reserved.
-          </div>
-          <div className="flex gap-6">
-            <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white transition-colors"
-            >
-              Twitter
-            </a>
-            <a
-              href="https://www.linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white transition-colors"
-            >
-              LinkedIn
-            </a>
-            <a
-              href="https://github.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white transition-colors"
-            >
-              GitHub
-            </a>
+
+          <div className="flex items-center gap-6">
+            <div className="text-sm text-gray-400">
+              © {year} Memora. All rights reserved.
+            </div>
+            <div className="h-6 w-px bg-gray-800" aria-hidden />
+            <div className="flex gap-4">
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white transition-colors hover:text-orange-400"
+                aria-label="Memora on Twitter"
+              >
+                <span aria-hidden className="text-2xl">
+                  🐦
+                </span>
+                <span className="sr-only">Twitter</span>
+              </a>
+              <a
+                href="https://www.linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white transition-colors hover:text-orange-400"
+                aria-label="Memora on LinkedIn"
+              >
+                <span aria-hidden className="text-2xl">
+                  💼
+                </span>
+                <span className="sr-only">LinkedIn</span>
+              </a>
+              <a
+                href="https://github.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white transition-colors hover:text-orange-400"
+                aria-label="Memora on GitHub"
+              >
+                <span aria-hidden className="text-2xl">
+                  🐙
+                </span>
+                <span className="sr-only">GitHub</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
