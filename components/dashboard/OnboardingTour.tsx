@@ -21,33 +21,41 @@ export default function OnboardingTour({ onComplete }: OnboardingTourProps) {
     // Prevent body scroll while onboarding is active
     document.body.style.overflow = "hidden";
 
-    const updateHighlight = () => {
-      if (currentStep === 1) {
-        // Highlight the Chat button in sidebar
-        const chatButton = document.querySelector('a[href="/dashboard/chat"]');
-        if (chatButton) {
-          const rect = chatButton.getBoundingClientRect();
-          setHighlightPosition({
-            top: rect.top,
-            left: rect.left,
-            width: rect.width,
-            height: rect.height,
-          });
+    const findVisibleMenuIcon = () => {
+      const menuIcons = document.querySelectorAll(
+        'span[aria-label="Open menu"]'
+      );
+      for (const icon of menuIcons) {
+        const styles = globalThis.getComputedStyle(icon);
+        if (styles.display !== "none") {
+          return icon;
         }
+      }
+      return null;
+    };
+
+    const updateHighlight = () => {
+      const isMobile = globalThis.innerWidth < 1024; // lg breakpoint
+      let targetElement: Element | null = null;
+
+      if (currentStep === 1) {
+        targetElement = isMobile
+          ? findVisibleMenuIcon()
+          : document.querySelector('a[href="/dashboard/chat"]');
       } else if (currentStep === 2) {
-        // Highlight the + button
-        const addButton = document.querySelector(
+        targetElement = document.querySelector(
           'button[data-onboarding="add-memory"]'
         );
-        if (addButton) {
-          const rect = addButton.getBoundingClientRect();
-          setHighlightPosition({
-            top: rect.top,
-            left: rect.left,
-            width: rect.width,
-            height: rect.height,
-          });
-        }
+      }
+
+      if (targetElement) {
+        const rect = targetElement.getBoundingClientRect();
+        setHighlightPosition({
+          top: rect.top,
+          left: rect.left,
+          width: rect.width,
+          height: rect.height,
+        });
       }
     };
 
@@ -76,11 +84,14 @@ export default function OnboardingTour({ onComplete }: OnboardingTourProps) {
   };
 
   const getTooltipContent = () => {
+    const isMobile = globalThis.innerWidth < 1024; // lg breakpoint
+
     if (currentStep === 1) {
       return {
         title: "Add memories via Chat",
-        description:
-          "Navigate to Chat to converse naturally. The system will extract and save your memories automatically during the conversation.",
+        description: isMobile
+          ? "Open this menu and navigate to Chat to converse naturally. The system will extract and save your memories automatically."
+          : "Navigate to Chat to converse naturally. The system will extract and save your memories automatically during the conversation.",
       };
     } else {
       return {
@@ -96,7 +107,7 @@ export default function OnboardingTour({ onComplete }: OnboardingTourProps) {
   // Calculate tooltip position
   const getTooltipPosition = () => {
     const isMobile = globalThis.innerWidth < 1024; // lg breakpoint
-    
+
     if (isMobile) {
       // On mobile, center tooltip at bottom of screen
       return {
@@ -106,11 +117,11 @@ export default function OnboardingTour({ onComplete }: OnboardingTourProps) {
         top: "auto",
       };
     }
-    
+
     // Desktop positioning
     const tooltipTop = highlightPosition.top + highlightPosition.height + 24;
     const tooltipLeft = Math.max(16, highlightPosition.left - 100);
-    
+
     return {
       top: `${tooltipTop}px`,
       left: `${tooltipLeft}px`,
