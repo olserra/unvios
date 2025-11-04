@@ -42,7 +42,9 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <span className="text-white transition-colors">Careers</span>
+                <Link href="/research" className="text-white transition-colors">
+                  Research
+                </Link>
               </li>
               <li>
                 <span className="text-white transition-colors">Contact</span>
