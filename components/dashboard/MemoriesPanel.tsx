@@ -55,7 +55,8 @@ export default function MemoriesPanel() {
   const forceOnboarding = urlParams.get("onboarding") === "true";
 
   // Force empty state if onboarding or empty flag is set
-  const items: any[] = forceEmptyState || forceOnboarding ? [] : data?.items || [];
+  const items: any[] =
+    forceEmptyState || forceOnboarding ? [] : data?.items || [];
 
   // Check if user should see onboarding
   useEffect(() => {
