@@ -681,9 +681,9 @@ export default function HomePage() {
                   </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-white transition-colors">
+                  <Link href="/security" className="text-white transition-colors">
                     Security
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <a href="#" className="text-white transition-colors">
