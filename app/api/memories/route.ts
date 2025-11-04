@@ -24,6 +24,21 @@ export async function GET() {
       return NextResponse.json({ grouped: makeGrouped(list), items: list });
     }
 
+    // Check if user is authenticated first
+    const user = await getUser();
+    if (!user) {
+      // Not authenticated - fall back to dev store in development
+      if (process.env.NODE_ENV === "development") {
+        const list = await dev.listMemories();
+        return NextResponse.json({ grouped: makeGrouped(list), items: list });
+      }
+      // In production, return 401 Unauthorized
+      return NextResponse.json(
+        { error: "User not authenticated" },
+        { status: 401 }
+      );
+    }
+
     const grouped = await getMemoriesGrouped();
     const items: any[] = [];
     for (const cat of Object.keys(grouped)) {

@@ -6,7 +6,11 @@ import { activityLogs, memories, users } from "./schema";
 
 export async function getMemoriesGrouped() {
   const user = await getUser();
-  if (!user) throw new Error("User not authenticated");
+  if (!user) {
+    // Return empty grouped object when user is not authenticated
+    // This allows the API route to handle the unauthenticated state gracefully
+    return {};
+  }
 
   // B2C: fetch memories belonging to the authenticated user
   const rows = await db
