@@ -1,15 +1,15 @@
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import {
+  Activity,
   ArrowRight,
   Brain,
+  Check,
   MessageSquare,
   Shield,
-  Zap,
   Target,
-  Check,
-  Activity,
+  Zap,
 } from "lucide-react";
+import Link from "next/link";
 
 export default function FeaturesPage() {
   const features = [
@@ -53,19 +53,30 @@ export default function FeaturesPage() {
             <Zap className="w-4 h-4" />
             AI-Powered Memory Assistant
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight">Features built to remember more</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight">
+            Features built to remember more
+          </h1>
           <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-            Memora turns scattered conversations and voice notes into a searchable, private knowledge base—available where you already communicate.
+            Memora turns scattered conversations and voice notes into a
+            searchable, private knowledge base—available where you already
+            communicate.
           </p>
           <div className="mt-8 flex items-center justify-center gap-4">
             <Link href="/sign-in">
-              <Button size="lg" className="bg-orange-600 text-white px-6 py-4 rounded-full">
+              <Button
+                size="lg"
+                className="bg-orange-600 text-white px-6 py-4 rounded-full"
+              >
                 Get started free
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
             <Link href="/pricing">
-              <Button size="lg" variant="outline" className="px-6 py-4 rounded-full">
+              <Button
+                size="lg"
+                variant="outline"
+                className="px-6 py-4 rounded-full"
+              >
                 See pricing
               </Button>
             </Link>
@@ -76,17 +87,26 @@ export default function FeaturesPage() {
       <section className="py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900">Core capabilities</h2>
-            <p className="text-gray-600 mt-2">Everything you need to capture, organize and recall—effortlessly.</p>
+            <h2 className="text-3xl font-bold text-gray-900">
+              Core capabilities
+            </h2>
+            <p className="text-gray-600 mt-2">
+              Everything you need to capture, organize and recall—effortlessly.
+            </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((f) => (
-              <div key={f.title} className="p-6 rounded-2xl border bg-white shadow-sm hover:shadow-md transition">
+              <div
+                key={f.title}
+                className="p-6 rounded-2xl border bg-white shadow-sm hover:shadow-md transition"
+              >
                 <div className="inline-flex items-center justify-center h-12 w-12 rounded-lg bg-orange-50 text-orange-600 mb-4">
                   {f.icon}
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">{f.title}</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  {f.title}
+                </h3>
                 <p className="text-gray-600 text-sm">{f.desc}</p>
               </div>
             ))}
@@ -98,10 +118,21 @@ export default function FeaturesPage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Integrations & workflows</h2>
-              <p className="text-gray-600 mb-6">Memora is designed to fit your flow. Capture from WhatsApp, import notes, or connect with other tools via webhooks and exports.</p>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                Integrations & workflows
+              </h2>
+              <p className="text-gray-600 mb-6">
+                Memora is designed to fit your flow. Capture from WhatsApp,
+                import notes, or connect with other tools via webhooks and
+                exports.
+              </p>
               <ul className="space-y-3">
-                {["WhatsApp contact integration","Export (JSON, CSV, PDF)","Webhook & Zapier friendly","API & custom automations"].map((i) => (
+                {[
+                  "WhatsApp contact integration",
+                  "Export (JSON, CSV, PDF)",
+                  "Webhook & Zapier friendly",
+                  "API & custom automations",
+                ].map((i) => (
                   <li key={i} className="flex items-start gap-3">
                     <div className="w-6 h-6 rounded-full bg-orange-600 text-white flex items-center justify-center mt-1">
                       <Check className="w-4 h-4" />
@@ -113,12 +144,24 @@ export default function FeaturesPage() {
             </div>
 
             <div className="bg-white p-6 rounded-2xl border shadow-sm">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Privacy & control</h3>
-              <p className="text-gray-600 mb-4">You keep full control of your data. Memora provides export tools, account deletion, and end-to-end encryption so your private memories stay private.</p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Privacy & control
+              </h3>
+              <p className="text-gray-600 mb-4">
+                You keep full control of your data. Memora provides export
+                tools, account deletion, and end-to-end encryption so your
+                private memories stay private.
+              </p>
               <div className="flex gap-3 flex-wrap">
-                <span className="px-3 py-1 bg-gray-100 rounded-full text-sm">End-to-end encryption</span>
-                <span className="px-3 py-1 bg-gray-100 rounded-full text-sm">Data export</span>
-                <span className="px-3 py-1 bg-gray-100 rounded-full text-sm">Access controls</span>
+                <span className="px-3 py-1 bg-gray-100 rounded-full text-sm">
+                  End-to-end encryption
+                </span>
+                <span className="px-3 py-1 bg-gray-100 rounded-full text-sm">
+                  Data export
+                </span>
+                <span className="px-3 py-1 bg-gray-100 rounded-full text-sm">
+                  Access controls
+                </span>
               </div>
             </div>
           </div>
@@ -127,14 +170,24 @@ export default function FeaturesPage() {
 
       <section className="py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Get better recall, faster</h2>
-          <p className="text-gray-600 mb-8">Memora combines on-device-like convenience with powerful server-side AI so you get instant answers without sacrificing privacy or control.</p>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            Get better recall, faster
+          </h2>
+          <p className="text-gray-600 mb-8">
+            Memora combines on-device-like convenience with powerful server-side
+            AI so you get instant answers without sacrificing privacy or
+            control.
+          </p>
           <div className="flex gap-4 justify-center">
             <Link href="/sign-in">
-              <Button className="bg-orange-600 text-white px-6 py-3 rounded-full">Start free</Button>
+              <Button className="bg-orange-600 text-white px-6 py-3 rounded-full">
+                Start free
+              </Button>
             </Link>
             <Link href="/pricing">
-              <Button variant="outline" className="px-6 py-3 rounded-full">Compare plans</Button>
+              <Button variant="outline" className="px-6 py-3 rounded-full">
+                Compare plans
+              </Button>
             </Link>
           </div>
         </div>
@@ -142,10 +195,17 @@ export default function FeaturesPage() {
 
       <section className="py-20 bg-gradient-to-br from-orange-500 to-orange-600">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to put your memory on autopilot?</h2>
-          <p className="mb-8 text-orange-100">Start capturing ideas today. Fast setup, private by design.</p>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Ready to put your memory on autopilot?
+          </h2>
+          <p className="mb-8 text-orange-100">
+            Start capturing ideas today. Fast setup, private by design.
+          </p>
           <Link href="/sign-in">
-            <Button size="lg" className="bg-white text-orange-600 px-8 py-4 rounded-full">
+            <Button
+              size="lg"
+              className="bg-white text-orange-600 px-8 py-4 rounded-full"
+            >
               Get started free
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
