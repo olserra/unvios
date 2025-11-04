@@ -13,9 +13,10 @@ import {
   Tag,
   X,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 import MemoryEditor from "./MemoryEditor";
+import OnboardingTour from "./OnboardingTour";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
@@ -44,8 +45,33 @@ export default function MemoriesPanel() {
   const [view, setView] = useState<"grid" | "list">("grid");
   const [editing, setEditing] = useState<Record<string, any> | null>(null);
   const [editorOpen, setEditorOpen] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   const items: any[] = data?.items || [];
+
+  // Check if user should see onboarding
+  useEffect(() => {
+    // Check for dev/testing flag in URL
+    const urlParams = new URLSearchParams(globalThis.location.search);
+    const forceOnboarding = urlParams.get("onboarding") === "true";
+
+    if (forceOnboarding) {
+      setShowOnboarding(true);
+      return;
+    }
+
+    if (data && items.length === 0) {
+      const hasSeenOnboarding = localStorage.getItem("memora_onboarding_seen");
+      if (!hasSeenOnboarding) {
+        setShowOnboarding(true);
+      }
+    }
+  }, [data, items.length]);
+
+  const handleOnboardingComplete = () => {
+    setShowOnboarding(false);
+    localStorage.setItem("memora_onboarding_seen", "true");
+  };
 
   const tags = useMemo(() => {
     const s = new Set<string>();
@@ -113,6 +139,7 @@ export default function MemoriesPanel() {
               setEditorOpen(true);
             }}
             className="bg-orange-600 hover:bg-orange-700 text-white"
+            data-onboarding="add-memory"
           >
             <Plus className="h-4 w-4 mr-2" />
             <span className="hidden sm:inline">New</span>
@@ -273,6 +300,10 @@ export default function MemoriesPanel() {
           onClose={() => setEditorOpen(false)}
           onSaved={() => mutate()}
         />
+      )}
+
+      {showOnboarding && (
+        <OnboardingTour onComplete={handleOnboardingComplete} />
       )}
     </section>
   );

@@ -4,6 +4,18 @@ This project is a Next.js 16 (canary) App Router SaaS-style app that stores user
 
 Keep guidance short and actionable. When making edits, reference concrete files below and follow existing patterns rather than introducing large architectural changes.
 
+### CRITICAL: Code Language Requirements
+
+**ALL code, comments, strings, and user-facing text MUST be written in English.**
+- Variable names: English only
+- Function names: English only
+- Comments: English only
+- User-facing strings (UI text, labels, messages): English only
+- Error messages: English only
+- Documentation: English only
+
+Do NOT use Portuguese or any other language in the codebase. This applies to all files: TypeScript, JavaScript, JSX, TSX, configuration files, etc.
+
 ### High-level architecture
 
 - Frontend: `app/` (Next.js 16 canary App Router / app directory). Many pages and components are server components; UI primitives live in `components/ui/`.
