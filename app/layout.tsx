@@ -1,5 +1,6 @@
 import AnalyticsGate from "@/components/analytics/analytics-gate";
 import CookieConsent from "@/components/ui/cookie-consent";
+import Footer from "@/components/ui/footer";
 import Header from "@/components/ui/header";
 import { getUser } from "@/lib/db/queries";
 import type { Metadata, Viewport } from "next";
@@ -27,11 +28,14 @@ export const viewport: Viewport = {
 
 const manrope = Manrope({ subsets: ["latin"] });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   readonly children: React.ReactNode;
 }) {
+  // resolve user on the server to decide whether to show the public footer
+  const user = await getUser();
+
   return (
     <html
       lang="en"
@@ -44,15 +48,16 @@ export default function RootLayout({
         <SWRConfig
           value={{
             fallback: {
-              // We do NOT await here
-              // Only components that read this data will suspend
-              "/api/user": getUser(),
+              // provide the resolved user as the SWR fallback for /api/user
+              "/api/user": user,
             },
           }}
         >
           <Header />
           {children}
         </SWRConfig>
+        {/* show public footer only when there is no authenticated user */}
+        {!user && <Footer />}
         <CookieConsent />
         <AnalyticsGate />
       </body>
