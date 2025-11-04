@@ -153,16 +153,38 @@ function UserMenu() {
   );
 }
 
+function Logo() {
+  const { data: user } = useSWR<User>("/api/user", fetcher);
+
+  const logoContent = (
+    <>
+      <CircleIcon className="h-6 w-6 text-orange-500" />
+      <span className="ml-2 text-xl font-semibold text-gray-900">
+        MEMORA
+      </span>
+    </>
+  );
+
+  // If user is not logged in, make logo clickable and redirect to home
+  if (!user) {
+    return (
+      <Link href="/" className="flex items-center hover:opacity-80 transition-opacity">
+        {logoContent}
+      </Link>
+    );
+  }
+
+  // If user is logged in, keep logo as plain div
+  return <div className="flex items-center">{logoContent}</div>;
+}
+
 export default function Header() {
   return (
     <header className="border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-        <div className="flex items-center">
-          <CircleIcon className="h-6 w-6 text-orange-500" />
-          <span className="ml-2 text-xl font-semibold text-gray-900">
-            MEMORA
-          </span>
-        </div>
+        <Suspense fallback={<div className="flex items-center h-6" />}>
+          <Logo />
+        </Suspense>
         <div className="flex items-center space-x-4">
           <Suspense fallback={<div className="h-9" />}>
             <UserMenu />
