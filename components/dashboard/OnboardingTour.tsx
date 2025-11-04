@@ -51,10 +51,12 @@ export default function OnboardingTour({ onComplete }: OnboardingTourProps) {
       }
     };
 
-    updateHighlight();
+    // Small delay to ensure DOM is ready
+    const timeoutId = setTimeout(updateHighlight, 100);
     window.addEventListener("resize", updateHighlight);
 
     return () => {
+      clearTimeout(timeoutId);
       window.removeEventListener("resize", updateHighlight);
       document.body.style.overflow = "";
     };
@@ -78,7 +80,7 @@ export default function OnboardingTour({ onComplete }: OnboardingTourProps) {
       return {
         title: "Add memories via Chat",
         description:
-          "Click here to go to Chat and converse naturally. The system will extract and save your memories automatically during the conversation.",
+          "Navigate to Chat to converse naturally. The system will extract and save your memories automatically during the conversation.",
       };
     } else {
       return {
@@ -90,6 +92,34 @@ export default function OnboardingTour({ onComplete }: OnboardingTourProps) {
   };
 
   const content = getTooltipContent();
+
+  // Calculate tooltip position
+  const getTooltipPosition = () => {
+    const isMobile = globalThis.innerWidth < 1024; // lg breakpoint
+    
+    if (isMobile) {
+      // On mobile, center tooltip at bottom of screen
+      return {
+        bottom: "1rem",
+        left: "1rem",
+        right: "1rem",
+        top: "auto",
+      };
+    }
+    
+    // Desktop positioning
+    const tooltipTop = highlightPosition.top + highlightPosition.height + 24;
+    const tooltipLeft = Math.max(16, highlightPosition.left - 100);
+    
+    return {
+      top: `${tooltipTop}px`,
+      left: `${tooltipLeft}px`,
+      bottom: "auto",
+      right: "auto",
+    };
+  };
+
+  const tooltipPosition = getTooltipPosition();
 
   return (
     <>
@@ -116,44 +146,42 @@ export default function OnboardingTour({ onComplete }: OnboardingTourProps) {
 
       {/* Tooltip */}
       <div
-        className="fixed z-[52] transition-all duration-300 ease-in-out"
-        style={{
-          top: `${highlightPosition.top + highlightPosition.height + 24}px`,
-          left: `${Math.max(16, highlightPosition.left - 100)}px`,
-        }}
+        className="fixed z-[52] transition-all duration-300 ease-in-out lg:max-w-sm"
+        style={tooltipPosition}
       >
-        <div className="bg-white rounded-2xl shadow-2xl p-6 max-w-sm border border-gray-100">
+        <div className="bg-white rounded-2xl shadow-2xl p-4 sm:p-6 border border-gray-100">
           <div className="flex items-start justify-between mb-3">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
                 <span className="text-orange-600 font-semibold text-sm">
                   {currentStep}
                 </span>
               </div>
-              <span className="text-xs text-gray-500 font-medium">
+              <span className="text-xs text-gray-500 font-medium whitespace-nowrap">
                 STEP {currentStep} OF 2
               </span>
             </div>
             <button
               onClick={handleComplete}
-              className="text-gray-400 hover:text-gray-600 transition-colors"
+              className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
+              aria-label="Close onboarding"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
             {content.title}
           </h3>
-          <p className="text-sm text-gray-600 mb-5 leading-relaxed">
+          <p className="text-sm text-gray-600 mb-4 sm:mb-5 leading-relaxed">
             {content.description}
           </p>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             {currentStep === 1 && (
               <Button
                 onClick={handleNext}
-                className="flex-1 bg-orange-600 hover:bg-orange-700 text-white"
+                className="flex-1 bg-orange-600 hover:bg-orange-700 text-white text-sm sm:text-base"
               >
                 Next
               </Button>
@@ -163,13 +191,13 @@ export default function OnboardingTour({ onComplete }: OnboardingTourProps) {
                 <Button
                   onClick={() => setCurrentStep(1)}
                   variant="outline"
-                  className="flex-1"
+                  className="flex-1 text-sm sm:text-base"
                 >
                   Back
                 </Button>
                 <Button
                   onClick={handleComplete}
-                  className="flex-1 bg-orange-600 hover:bg-orange-700 text-white"
+                  className="flex-1 bg-orange-600 hover:bg-orange-700 text-white text-sm sm:text-base"
                 >
                   Got it!
                 </Button>
