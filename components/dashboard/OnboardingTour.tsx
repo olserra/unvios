@@ -24,9 +24,7 @@ export default function OnboardingTour({ onComplete }: OnboardingTourProps) {
     const updateHighlight = () => {
       if (currentStep === 1) {
         // Highlight the Chat button in sidebar
-        const chatButton = document.querySelector(
-          'a[href="/dashboard/chat"]'
-        );
+        const chatButton = document.querySelector('a[href="/dashboard/chat"]');
         if (chatButton) {
           const rect = chatButton.getBoundingClientRect();
           setHighlightPosition({

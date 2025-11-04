@@ -7,6 +7,7 @@ Keep guidance short and actionable. When making edits, reference concrete files 
 ### CRITICAL: Code Language Requirements
 
 **ALL code, comments, strings, and user-facing text MUST be written in English.**
+
 - Variable names: English only
 - Function names: English only
 - Comments: English only
