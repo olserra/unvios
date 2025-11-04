@@ -8,8 +8,10 @@ import {
   FileText,
   Grid3X3,
   List,
+  MessageSquare,
   Plus,
   Search,
+  Sparkles,
   Tag,
   X,
 } from "lucide-react";
@@ -47,7 +49,13 @@ export default function MemoriesPanel() {
   const [editorOpen, setEditorOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
 
-  const items: any[] = data?.items || [];
+  // Check for empty state testing flag
+  const urlParams = new URLSearchParams(globalThis.location.search);
+  const forceEmptyState = urlParams.get("empty") === "true";
+  const forceOnboarding = urlParams.get("onboarding") === "true";
+
+  // Force empty state if onboarding or empty flag is set
+  const items: any[] = forceEmptyState || forceOnboarding ? [] : data?.items || [];
 
   // Check if user should see onboarding
   useEffect(() => {
@@ -185,19 +193,93 @@ export default function MemoriesPanel() {
       )}
 
       {filtered.length === 0 && (
-        <Card className="border-0 shadow-sm">
-          <CardContent className="pt-12 pb-12 text-center">
-            <FileText className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              No memories found
-            </h3>
-            <p className="text-sm text-gray-500">
-              {query || activeTag
-                ? "Try adjusting your filters"
-                : "Start by creating your first memory"}
-            </p>
-          </CardContent>
-        </Card>
+        <div className="max-w-4xl mx-auto">
+          {query || activeTag ? (
+            <Card className="border-0 shadow-sm">
+              <CardContent className="pt-12 pb-12 text-center">
+                <FileText className="w-12 h-12 mx-auto mb-4 text-gray-300" />
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  No memories found
+                </h3>
+                <p className="text-sm text-gray-500">
+                  Try adjusting your filters
+                </p>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-orange-100 to-orange-50 mb-4">
+                <Brain className="w-8 h-8 text-orange-600" />
+              </div>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-2">
+                Start capturing your memories
+              </h3>
+              <p className="text-gray-600 mb-8">
+                Choose your preferred way to add memories
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+                {/* Chat Method */}
+                <Card className="border-2 border-orange-100 hover:border-orange-200 hover:shadow-lg transition-all group cursor-pointer">
+                  <CardContent className="p-8 text-center">
+                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 mb-5 group-hover:scale-110 transition-transform">
+                      <MessageSquare className="w-7 h-7 text-white" />
+                    </div>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-3">
+                      Chat naturally
+                    </h4>
+                    <p className="text-sm text-gray-600 leading-relaxed mb-6">
+                      Have a conversation in the Chat section. The AI will
+                      automatically extract and save your memories as you talk.
+                    </p>
+                    <Button
+                      onClick={() => {
+                        globalThis.location.href = "/dashboard/chat";
+                      }}
+                      className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white"
+                    >
+                      <MessageSquare className="w-4 h-4 mr-2" />
+                      Go to Chat
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                {/* Manual Method */}
+                <Card className="border-2 border-gray-100 hover:border-gray-200 hover:shadow-lg transition-all group cursor-pointer">
+                  <CardContent className="p-8 text-center">
+                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-gray-700 to-gray-800 mb-5 group-hover:scale-110 transition-transform">
+                      <Plus className="w-7 h-7 text-white" />
+                    </div>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-3">
+                      Add manually
+                    </h4>
+                    <p className="text-sm text-gray-600 leading-relaxed mb-6">
+                      Click the + button in the top bar to quickly create a
+                      memory with your own tags and categories.
+                    </p>
+                    <Button
+                      onClick={() => {
+                        setEditing(null);
+                        setEditorOpen(true);
+                      }}
+                      variant="outline"
+                      className="w-full border-2 hover:bg-gray-50"
+                    >
+                      <Plus className="w-4 h-4 mr-2" />
+                      Create Memory
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Optional: Add a subtle hint */}
+              <div className="mt-8 flex items-center justify-center gap-2 text-sm text-gray-500">
+                <Sparkles className="w-4 h-4" />
+                <span>Both methods work seamlessly together</span>
+              </div>
+            </div>
+          )}
+        </div>
       )}
 
       {filtered.length > 0 && view === "grid" && (
