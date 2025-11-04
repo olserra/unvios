@@ -2,11 +2,11 @@ import { verifyToken } from "@/lib/auth/session";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-// Middleware to handle authentication and redirects.
+// Proxy middleware to handle authentication and redirects (Next.js 16+).
 // 1. Validates session tokens and clears invalid ones to prevent redirect loops
 // 2. Redirects authenticated users from "/" to "/dashboard/memories"
 // 3. Protects dashboard routes by redirecting unauthenticated users to "/sign-in"
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const { pathname, search } = req.nextUrl;
   const sessionCookie = req.cookies.get("session")?.value;
 
