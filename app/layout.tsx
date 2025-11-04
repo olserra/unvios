@@ -1,6 +1,7 @@
+import AnalyticsGate from "@/components/analytics/analytics-gate";
+import CookieConsent from "@/components/ui/cookie-consent";
 import Header from "@/components/ui/header";
 import { getUser } from "@/lib/db/queries";
-import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import { Manrope } from "next/font/google";
 import { SWRConfig } from "swr";
@@ -39,7 +40,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       </head>
-      <body className="min-h-[100dvh] bg-gray-50">
+      <body suppressHydrationWarning className="min-h-[100dvh] bg-gray-50">
         <SWRConfig
           value={{
             fallback: {
@@ -52,7 +53,8 @@ export default function RootLayout({
           <Header />
           {children}
         </SWRConfig>
-        <Analytics />
+        <CookieConsent />
+        <AnalyticsGate />
       </body>
     </html>
   );

@@ -665,14 +665,20 @@ export default function HomePage() {
               <h4 className="font-semibold text-white mb-4">Product</h4>
               <ul className="space-y-3">
                 <li>
-                  <a href="#" className="text-white transition-colors">
+                  <button
+                    type="button"
+                    className="text-white transition-colors"
+                  >
                     Features
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a href="#" className="text-white transition-colors">
+                  <Link
+                    href="/pricing"
+                    className="text-white transition-colors"
+                  >
                     Pricing
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <a href="#" className="text-white transition-colors">
@@ -740,24 +746,33 @@ export default function HomePage() {
               <h4 className="font-semibold text-white mb-4">Legal</h4>
               <ul className="space-y-3">
                 <li>
-                  <a href="#" className="text-white transition-colors">
+                  <Link
+                    href="/privacy"
+                    className="text-white transition-colors"
+                  >
                     Privacy
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-white transition-colors">
+                  <Link href="/terms" className="text-white transition-colors">
                     Terms
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-white transition-colors">
+                  <Link
+                    href="/cookie-policy"
+                    className="text-white transition-colors"
+                  >
                     Cookie Policy
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-white transition-colors">
+                  <Link
+                    href="/licenses"
+                    className="text-white transition-colors"
+                  >
                     Licenses
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -771,13 +786,28 @@ export default function HomePage() {
               © 2025 Memora. All rights reserved.
             </div>
             <div className="flex gap-6">
-              <a href="#" className="text-white transition-colors">
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white transition-colors"
+              >
                 Twitter
               </a>
-              <a href="#" className="text-white transition-colors">
+              <a
+                href="https://www.linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white transition-colors"
+              >
                 LinkedIn
               </a>
-              <a href="#" className="text-white transition-colors">
+              <a
+                href="https://github.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white transition-colors"
+              >
                 GitHub
               </a>
             </div>
