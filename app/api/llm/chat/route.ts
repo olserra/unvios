@@ -107,7 +107,7 @@ async function callLLM(prompt: string, userName?: string | null) {
         messages: [
           {
             role: "system",
-            content: `You are Memora, a helpful AI assistant that remembers personal information.
+            content: `You are Unvios, a helpful AI assistant that remembers personal information.
             **Response Guidelines:**
             - CRITICAL: Always respond in the SAME language the user is using in their current message
             - If user switches languages mid-conversation, switch immediately to match
@@ -147,7 +147,7 @@ async function callLLM(prompt: string, userName?: string | null) {
         ],
       }
     : {
-        inputs: `You are Memora, a polite, concise AI assistant designed to help users remember personal information.
+        inputs: `You are Unvios, a polite, concise AI assistant designed to help users remember personal information.
 
 **CRITICAL RULES FOR MEMORY SAVING:**
 
@@ -181,7 +181,7 @@ Assistant: "Here's how to cook pasta: boil water, add salt, cook 8-10 minutes...
 Save memories ONLY for relevant personal information.
 
 User: ${prompt}
-Memora:`,
+Unvios:`,
       };
   const res = await fetch(llmUrl, {
     method: "POST",

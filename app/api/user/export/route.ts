@@ -63,7 +63,7 @@ export async function GET() {
     status: 200,
     headers: {
       "Content-Type": "application/json",
-      "Content-Disposition": `attachment; filename="memora-export-${user.id}.json"`,
+      "Content-Disposition": `attachment; filename="unvios-export-${user.id}.json"`,
     },
   });
 }

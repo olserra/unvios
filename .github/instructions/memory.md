@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Memora app automatically saves relevant personal information shared during chat conversations with the LLM. This system ensures that important user details are captured and stored for future reference, enhancing the personalized experience.
+The Unvios app automatically saves relevant personal information shared during chat conversations with the LLM. This system ensures that important user details are captured and stored for future reference, enhancing the personalized experience.
 
 ## How It Works
 

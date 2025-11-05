@@ -9,8 +9,8 @@ import { SWRConfig } from "swr";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Memora - Your Personal Memory Assistant",
-  description: "Never forget anything again with Memora.",
+  title: "Unvios - Your Personal Memory Assistant",
+  description: "Never forget anything again with Unvios.",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
   ),

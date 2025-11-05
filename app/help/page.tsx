@@ -13,9 +13,9 @@ import {
 import Link from "next/link";
 
 export const metadata = {
-  title: "Help Center — Memora",
+  title: "Help Center — Unvios",
   description:
-    "Get help with Memora. Find answers to common questions, guides, and support resources.",
+    "Get help with Unvios. Find answers to common questions, guides, and support resources.",
 };
 
 export default function HelpCenterPage() {
@@ -26,15 +26,15 @@ export default function HelpCenterPage() {
       questions: [
         {
           q: "How do I create my first memory?",
-          a: "You can create memories by chatting with Memora in the dashboard. Simply type or speak naturally, and Memora will extract and save important information automatically.",
+          a: "You can create memories by chatting with Unvios in the dashboard. Simply type or speak naturally, and Unvios will extract and save important information automatically.",
         },
         {
           q: "What types of information can I save?",
-          a: "Memora can save any personal information: facts about yourself, preferences, goals, meeting notes, ideas, tasks, and more. The AI automatically tags and organizes everything.",
+          a: "Unvios can save any personal information: facts about yourself, preferences, goals, meeting notes, ideas, tasks, and more. The AI automatically tags and organizes everything.",
         },
         {
           q: "How do I search my memories?",
-          a: "Use the chat interface to ask questions in natural language. Memora uses AI to find relevant memories and provide contextual answers based on what you've saved.",
+          a: "Use the chat interface to ask questions in natural language. Unvios uses AI to find relevant memories and provide contextual answers based on what you've saved.",
         },
       ],
     },
@@ -66,7 +66,7 @@ export default function HelpCenterPage() {
         },
         {
           q: "How does AI-powered recall work?",
-          a: "Memora uses vector embeddings to find semantically similar memories, even if they don't match your exact words. This enables intelligent, context-aware recall.",
+          a: "Unvios uses vector embeddings to find semantically similar memories, even if they don't match your exact words. This enables intelligent, context-aware recall.",
         },
         {
           q: "Can I organize memories with tags?",
@@ -74,7 +74,7 @@ export default function HelpCenterPage() {
         },
         {
           q: "What LLM providers are supported?",
-          a: "Memora supports OpenAI and any OpenAI-compatible API endpoint. You can configure your preferred provider in your environment settings.",
+          a: "Unvios supports OpenAI and any OpenAI-compatible API endpoint. You can configure your preferred provider in your environment settings.",
         },
       ],
     },
@@ -101,7 +101,7 @@ export default function HelpCenterPage() {
   const guides = [
     {
       title: "Quick Start Guide",
-      desc: "Get up and running with Memora in 5 minutes",
+      desc: "Get up and running with Unvios in 5 minutes",
       icon: <BookOpen className="w-6 h-6" />,
       href: "/help#quickstart",
     },
@@ -113,7 +113,7 @@ export default function HelpCenterPage() {
     },
     {
       title: "API Documentation",
-      desc: "Integrate Memora into your own applications",
+      desc: "Integrate Unvios into your own applications",
       icon: <Zap className="w-6 h-6" />,
       href: "/help#api",
     },
@@ -139,7 +139,7 @@ export default function HelpCenterPage() {
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
             Find answers to common questions, explore guides, and get the most
-            out of Memora.
+            out of Unvios.
           </p>
 
           {/* Search Box */}
@@ -236,7 +236,7 @@ export default function HelpCenterPage() {
             </h2>
             <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
               Can't find what you're looking for? Our support team is here to
-              help you get the most out of Memora.
+              help you get the most out of Unvios.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact">
@@ -248,7 +248,7 @@ export default function HelpCenterPage() {
                   Contact Support
                 </Button>
               </Link>
-              <a href="mailto:support@memora.app">
+              <a href="mailto:support@unvios.app">
                 <Button
                   size="lg"
                   variant="outline"

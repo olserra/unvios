@@ -3,7 +3,7 @@ import { Clock, Layers } from "lucide-react";
 import Link from "next/link";
 
 export const metadata = {
-  title: "About — Memora",
+  title: "About — Unvios",
 };
 
 export default function AboutPage() {
@@ -14,7 +14,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="sm:flex sm:items-center sm:justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Memora Lab</h1>
+              <h1 className="text-3xl font-bold text-gray-900">Unvios Lab</h1>
               <p className="mt-2 text-gray-600">
                 A different view: experiments, timelines, and live previews from
                 our research lab.

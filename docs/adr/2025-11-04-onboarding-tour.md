@@ -46,7 +46,7 @@ Implemented a 2-step onboarding tour that activates automatically when:
 
 **Persistence:**
 
-- Uses `localStorage.setItem("memora_onboarding_seen", "true")` after completion
+- Uses `localStorage.setItem("unvios_onboarding_seen", "true")` after completion
 - Prevents body scroll during onboarding
 - Can be dismissed by clicking the overlay or the X button
 
@@ -97,7 +97,7 @@ Implemented a 2-step onboarding tour that activates automatically when:
 
 **Testing Rollback:**
 
-- Clear localStorage key: `localStorage.removeItem("memora_onboarding_seen")`
+- Clear localStorage key: `localStorage.removeItem("unvios_onboarding_seen")`
 - Delete all memories to trigger the tour again
 
 ## Next Steps

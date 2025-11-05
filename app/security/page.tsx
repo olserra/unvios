@@ -177,10 +177,10 @@ export default function SecurityPage() {
               For more technical details or to report a security concern,
               contact our security team at{" "}
               <a
-                href="mailto:security@memora.example"
-                className="text-orange-600 underline"
+                href="mailto:security@unvios.example"
+                className="text-orange-600"
               >
-                security@memora.example
+                security@unvios.example
               </a>
               .
             </p>

@@ -3,7 +3,7 @@
 import { Analytics } from "@vercel/analytics/next";
 import * as React from "react";
 
-const COOKIE_NAME = "memora_cookie_consent";
+const COOKIE_NAME = "unvios_cookie_consent";
 
 function readConsent(): string | null {
   try {
@@ -35,15 +35,15 @@ export default function AnalyticsGate() {
         // Log the error so it's handled rather than silently ignored
         // This helps with debugging unexpected event payloads in production.
         // Avoid throwing here to keep the event handling non-fatal.
-        // eslint-disable-next-line no-console
-        console.error("Failed to handle memora:cookie-consent event:", err);
+  // eslint-disable-next-line no-console
+  console.error("Failed to handle unvios:cookie-consent event:", err);
       }
     };
 
-    globalThis.addEventListener("memora:cookie-consent", handler as EventListener);
+    globalThis.addEventListener("unvios:cookie-consent", handler as EventListener);
     return () =>
       globalThis.removeEventListener(
-        "memora:cookie-consent",
+        "unvios:cookie-consent",
         handler as EventListener
       );
   }, []);

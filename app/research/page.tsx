@@ -14,7 +14,7 @@ import {
 import Link from "next/link";
 
 export const metadata = {
-  title: "Research — Memora",
+  title: "Research — Unvios",
   description:
     "Partnering with researchers worldwide in cognitive science, AI, and neuroscience to advance human memory augmentation with a mental health-first approach.",
 };
@@ -382,10 +382,10 @@ export default function ResearchPage() {
           <p className="mt-6 text-sm text-orange-200">
             Email us at{" "}
             <a
-              href="mailto:research@memora.ai"
+              href="mailto:research@unvios.ai"
               className="underline hover:text-gray-500"
             >
-              research@memora.ai
+              research@unvios.ai
             </a>
           </p>
         </div>

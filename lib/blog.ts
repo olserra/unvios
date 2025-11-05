@@ -11,10 +11,10 @@ export type Post = {
 // Two example posts with dates in the recent past
 export const posts: Post[] = [
   {
-    slug: "introducing-memora-ai",
-    title: "Introducing Memora AI: Your Second Brain",
+    slug: "introducing-unvios-ai",
+    title: "Introducing Unvios AI: Your Second Brain",
     excerpt:
-      "Meet Memora AI — an assistant that lives in WhatsApp, remembers what matters, and helps you recall context when you need it.",
+      "Meet Unvios AI — an assistant that lives in WhatsApp, remembers what matters, and helps you recall context when you need it.",
     image:
       "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=600&fit=crop",
     imageAlt: "Abstract visualization of neural networks and AI technology",
@@ -24,13 +24,13 @@ We've all been there. A brilliant idea strikes while you're driving, cooking, or
 
 Or maybe you had an important conversation last week, and now you're struggling to recall the key details. Was it Tuesday or Wednesday? What was the name they mentioned? The context you need is buried somewhere in your brain, just out of reach.
 
-**This is the problem Memora was built to solve.**
+**This is the problem Unvios was built to solve.**
 
-## What is Memora AI?
+## What is Unvios AI?
 
-Memora AI is your personal memory assistant that lives right inside WhatsApp—the app you already use every day. No need to download another app, learn a new interface, or change your habits.
+Unvios AI is your personal memory assistant that lives right inside WhatsApp—the app you already use every day. No need to download another app, learn a new interface, or change your habits.
 
-Simply send a message, voice note, or forward anything to Memora, and it becomes part of your searchable, AI-organized second brain.
+Simply send a message, voice note, or forward anything to Unvios, and it becomes part of your searchable, AI-organized second brain.
 
 ### How It Works
 
@@ -41,23 +41,23 @@ Simply send a message, voice note, or forward anything to Memora, and it becomes
 - Even transcribe phone calls for later reference
 
 **2. AI-Powered Organization**
-Memora doesn't just store your memories—it understands them. Our AI automatically:
+Unvios doesn't just store your memories—it understands them. Our AI automatically:
 - Categorizes content by topic and context
 - Tags people, places, and important concepts
 - Connects related memories across time
 - Extracts key information and insights
 
 **3. Instant Recall**
-Ask Memora anything in natural language:
+Ask Unvios anything in natural language:
 - "What was that restaurant Maria recommended?"
 - "Show me my ideas about the mobile app redesign"
 - "What did I discuss with John last Tuesday?"
 
-Memora searches through your entire memory bank and surfaces exactly what you need, with full context.
+Unvios searches through your entire memory bank and surfaces exactly what you need, with full context.
 
 ## Privacy First
 
-We know your memories are personal. That's why Memora is built with privacy at its core:
+We know your memories are personal. That's why Unvios is built with privacy at its core:
 
 - **End-to-end encryption** for all your data
 - **You own your memories**—export them anytime
@@ -68,14 +68,14 @@ Your thoughts, ideas, and conversations stay yours. Always.
 
 ## Built for Your Workflow
 
-Unlike traditional note-taking apps, Memora adapts to how you already work:
+Unlike traditional note-taking apps, Unvios adapts to how you already work:
 
 - **No app switching**: Everything happens in WhatsApp
 - **No manual organization**: AI handles the filing
 - **No searching through folders**: Just ask what you need
-- **No learning curve**: If you can send a message, you can use Memora
+- **No learning curve**: If you can send a message, you can use Unvios
 
-## Who Is Memora For?
+## Who Is Unvios For?
 
 **Creative Professionals**: Capture fleeting inspiration and recall ideas when you need them.
 
@@ -83,13 +83,13 @@ Unlike traditional note-taking apps, Memora adapts to how you already work:
 
 **Students & Researchers**: Build a knowledge base that grows with you and surfaces connections you didn't know existed.
 
-**Anyone who thinks**: If you have ideas worth remembering, Memora is for you.
+**Anyone who thinks**: If you have ideas worth remembering, Unvios is for you.
 
 ## Getting Started
 
-Ready to never forget again? Getting started with Memora takes less than 2 minutes:
+Ready to never forget again? Getting started with Unvios takes less than 2 minutes:
 
-1. Sign up at [memora.ai](https://memora.ai)
+1. Sign up at [unvios.ai](https://unvios.ai)
 2. Connect your WhatsApp account
 3. Start capturing memories
 
@@ -97,18 +97,18 @@ Your first 100 memories are free, forever. No credit card required.
 
 ## The Future of Memory
 
-We're just getting started. Memora is constantly learning and evolving:
+We're just getting started. Unvios is constantly learning and evolving:
 
 - **Smart reminders** based on context and timing
 - **Proactive insights** from your memory patterns
 - **Team workspaces** for shared knowledge
 - **Integration** with your favorite tools
 
-Your brain is incredible at thinking, creating, and connecting. Let Memora handle the remembering.
+Your brain is incredible at thinking, creating, and connecting. Let Unvios handle the remembering.
 
 ---
 
-*Try Memora today and discover what it feels like to never lose an idea again.*`,
+*Try Unvios today and discover what it feels like to never lose an idea again.*`,
     date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 30).toISOString(), // ~30 days ago
   },
   {
@@ -141,7 +141,7 @@ The easier it is to capture ideas, the more ideas you'll capture. This means:
 
 **Choose one primary capture tool** and stick to it. For most people, that's their phone—it's always with you, and you can capture text, voice, or photos instantly.
 
-**Use voice notes liberally**. Speaking is faster than typing, and you can capture nuance and emotion that gets lost in text. With Memora, your voice notes are automatically transcribed and searchable.
+**Use voice notes liberally**. Speaking is faster than typing, and you can capture nuance and emotion that gets lost in text. With Unvios, your voice notes are automatically transcribed and searchable.
 
 **Capture in context**. Don't just write "mobile app idea"—capture why you thought of it, what problem it solves, who it's for. Future you will thank present you for the context.
 
@@ -165,7 +165,7 @@ During this review:
 
 **Look for patterns and themes**. Are multiple ideas pointing at the same problem? Are you repeatedly drawn to certain topics?
 
-**Connect related ideas**. This is where AI-powered tools like Memora shine—they can surface connections you might miss, linking a design idea from Tuesday to a business concept from three months ago.
+**Connect related ideas**. This is where AI-powered tools like Unvios shine—they can surface connections you might miss, linking a design idea from Tuesday to a business concept from three months ago.
 
 **Flag ideas worth developing**. Not every captured thought deserves immediate action, but some will be worth exploring further. Mark them.
 
@@ -240,9 +240,9 @@ Think of everything as a rough draft:
 
 Share your rough drafts with trusted colleagues, friends, or communities. The feedback you get will be infinitely more valuable than spending another week trying to perfect something in isolation.
 
-### Memora as Your Creative Partner
+### Unvios as Your Creative Partner
 
-This is where a tool like Memora becomes invaluable. You can:
+This is where a tool like Unvios becomes invaluable. You can:
 
 **Dump rough ideas** without organizing them
 **Ask for related thoughts** when you need inspiration
@@ -267,7 +267,7 @@ Your creative output isn't limited by your talent or your inspiration. It's limi
 
 ---
 
-*Start building your creative system today. Capture your next idea in Memora and see where it leads.*`,
+*Start building your creative system today. Capture your next idea in Unvios and see where it leads.*`,
     date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 120).toISOString(), // ~120 days ago
   },
 ];

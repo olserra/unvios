@@ -2,8 +2,8 @@ import { Mail, MessageSquare } from "lucide-react";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Contact — Memora",
-  description: "Get in touch with the Memora team",
+  title: "Contact — Unvios",
+  description: "Get in touch with the Unvios team",
 };
 
 export default function ContactPage() {
@@ -28,7 +28,7 @@ export default function ContactPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Email Support */}
             <a
-              href="mailto:support@memora.app"
+              href="mailto:support@unvios.app"
               className="group bg-white border-2 border-gray-200 rounded-2xl p-8 hover:border-orange-500 hover:shadow-lg transition-all"
             >
               <div className="flex items-start gap-4">
@@ -43,7 +43,7 @@ export default function ContactPage() {
                     For general inquiries, support questions, and feedback.
                   </p>
                   <div className="text-orange-600 font-medium">
-                    support@memora.app
+                    support@unvios.app
                   </div>
                 </div>
               </div>
@@ -51,7 +51,7 @@ export default function ContactPage() {
 
             {/* Sales & Partnerships */}
             <a
-              href="mailto:hello@memora.app"
+              href="mailto:hello@unvios.app"
               className="group bg-white border-2 border-gray-200 rounded-2xl p-8 hover:border-orange-500 hover:shadow-lg transition-all"
             >
               <div className="flex items-start gap-4">
@@ -66,7 +66,7 @@ export default function ContactPage() {
                     For business inquiries, enterprise plans, and partnerships.
                   </p>
                   <div className="text-orange-600 font-medium">
-                    hello@memora.app
+                    hello@unvios.app
                   </div>
                 </div>
               </div>
@@ -74,7 +74,7 @@ export default function ContactPage() {
 
             {/* GitHub */}
             <a
-              href="https://github.com/yourusername/memora"
+              href="https://github.com/yourusername/unvios"
               target="_blank"
               rel="noopener noreferrer"
               className="group bg-white border-2 border-gray-200 rounded-2xl p-8 hover:border-orange-500 hover:shadow-lg transition-all"
@@ -99,7 +99,7 @@ export default function ContactPage() {
 
             {/* Social */}
             <a
-              href="https://twitter.com/memora_app"
+              href="https://twitter.com/unvios_app"
               target="_blank"
               rel="noopener noreferrer"
               className="group bg-white border-2 border-gray-200 rounded-2xl p-8 hover:border-orange-500 hover:shadow-lg transition-all"
@@ -116,7 +116,7 @@ export default function ContactPage() {
                     Follow us for updates, tips, and community discussions.
                   </p>
                   <div className="text-orange-600 font-medium">
-                    @memora_app →
+                    @unvios_app →
                   </div>
                 </div>
               </div>
@@ -150,10 +150,10 @@ export default function ContactPage() {
                 Yes! Enterprise customers get dedicated support, custom SLAs,
                 and direct access to our engineering team. Contact us at{" "}
                 <a
-                  href="mailto:hello@memora.app"
+                  href="mailto:hello@unvios.app"
                   className="text-orange-600 hover:underline"
                 >
-                  hello@memora.app
+                  hello@unvios.app
                 </a>{" "}
                 to learn more.
               </p>
@@ -167,10 +167,10 @@ export default function ContactPage() {
                 If you've discovered a security vulnerability, please email us
                 directly at{" "}
                 <a
-                  href="mailto:security@memora.app"
+                  href="mailto:security@unvios.app"
                   className="text-orange-600 hover:underline"
                 >
-                  security@memora.app
+                  security@unvios.app
                 </a>
                 {". "}We take security seriously and will respond promptly.
               </p>
@@ -183,10 +183,10 @@ export default function ContactPage() {
               <p className="text-gray-600">
                 Absolutely! Email{" "}
                 <a
-                  href="mailto:hello@memora.app"
+                  href="mailto:hello@unvios.app"
                   className="text-orange-600 hover:underline"
                 >
-                  hello@memora.app
+                  hello@unvios.app
                 </a>{" "}
                 with your preferred times and we'll set up a personalized demo
                 for your team.
@@ -202,7 +202,7 @@ export default function ContactPage() {
           <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl p-12 text-white">
             <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
             <p className="text-xl text-orange-100 mb-8 max-w-2xl mx-auto">
-              Try Memora today and experience a smarter way to manage your
+              Try Unvios today and experience a smarter way to manage your
               memories and knowledge.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

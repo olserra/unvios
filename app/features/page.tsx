@@ -57,7 +57,7 @@ export default function FeaturesPage() {
             Features built to remember more
           </h1>
           <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-            Memora turns scattered conversations and voice notes into a
+            Unvios turns scattered conversations and voice notes into a
             searchable, private knowledge base—available where you already
             communicate.
           </p>
@@ -122,7 +122,7 @@ export default function FeaturesPage() {
                 Integrations & workflows
               </h2>
               <p className="text-gray-600 mb-6">
-                Memora is designed to fit your flow. Capture from WhatsApp,
+                Unvios is designed to fit your flow. Capture from WhatsApp,
                 import notes, or connect with other tools via webhooks and
                 exports.
               </p>
@@ -148,7 +148,7 @@ export default function FeaturesPage() {
                 Privacy & control
               </h3>
               <p className="text-gray-600 mb-4">
-                You keep full control of your data. Memora provides export
+                You keep full control of your data. Unvios provides export
                 tools, account deletion, and end-to-end encryption so your
                 private memories stay private.
               </p>
@@ -174,7 +174,7 @@ export default function FeaturesPage() {
             Get better recall, faster
           </h2>
           <p className="text-gray-600 mb-8">
-            Memora combines on-device-like convenience with powerful server-side
+            Unvios combines on-device-like convenience with powerful server-side
             AI so you get instant answers without sacrificing privacy or
             control.
           </p>

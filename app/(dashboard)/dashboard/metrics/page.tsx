@@ -1,19 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  Brain,
-  Sparkles,
-  TrendingUp,
-  Clock,
   BookOpen,
+  Brain,
+  Clock,
+  Compass,
   Gauge,
   Heart,
-  Compass,
+  Sparkles,
+  TrendingUp,
   Zap,
 } from "lucide-react";
-import { ResponsiveContainer, BarChart, Bar, XAxis } from "recharts";
+import { useEffect, useState } from "react";
+import { Bar, BarChart, ResponsiveContainer, XAxis } from "recharts";
 
 interface Metric {
   label: string;
@@ -43,7 +43,7 @@ interface ApiMetrics {
   memoriesByCategory: Record<string, number>;
 }
 
-export default function MemoraInsights() {
+export default function UnviosInsights() {
   const [apiData, setApiData] = useState<ApiMetrics | null>(null);
   const [loading, setLoading] = useState(true);
   const [weekActivity, setWeekActivity] = useState<WeekActivity[]>([]);

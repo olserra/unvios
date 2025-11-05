@@ -49,15 +49,13 @@ export default function HomePage() {
                 AI-Powered Memory Assistant
               </div>
               <h1 className="text-5xl font-bold text-gray-900 tracking-tight sm:text-6xl md:text-7xl leading-tight">
-                Never Forget{" "}
-                <span className="block text-orange-500 mt-2">
-                  Anything Again
-                </span>
+                Never Forget,{" "}
+                <span className="text-orange-500">Save Everything</span>
               </h1>
               <p className="mt-6 text-lg text-gray-600 sm:text-xl leading-relaxed">
-                Your personal AI memory that lives in WhatsApp. Capture ideas,
-                transcribe calls, and recall everything instantly—no app
-                switching required.
+                Your AI memory that lives in chat. Save ideas, notes, and to-dos
+                — and recall them anytime. An extended brain for everything that
+                matters.
               </p>
               <div className="mt-10 flex flex-col sm:flex-row gap-4 sm:max-w-lg sm:mx-auto lg:mx-0 justify-center lg:justify-start">
                 <Link href="/sign-in">
@@ -104,7 +102,7 @@ export default function HomePage() {
                     <div className="flex items-center gap-3 pb-4 border-b border-gray-700">
                       <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600"></div>
                       <div>
-                        <div className="text-white font-medium">Memora AI</div>
+                        <div className="text-white font-medium">Unvios AI</div>
                         <div className="text-gray-400 text-sm">Online</div>
                       </div>
                     </div>
@@ -145,7 +143,7 @@ export default function HomePage() {
               Everything you need to remember
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Powerful features that make Memora your second brain
+              Powerful features that make Unvios your second brain
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -196,7 +194,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              How Memora works
+              How Unvios works
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Three simple steps to never forget again
@@ -211,7 +209,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Capture</h3>
               <p className="text-gray-600 leading-relaxed">
-                Send a message, voice note, or forward anything to Memora in
+                Send a message, voice note, or forward anything to Unvios in
                 WhatsApp
               </p>
             </div>
@@ -235,7 +233,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Recall</h3>
               <p className="text-gray-600 leading-relaxed">
-                Ask Memora anything and get instant, contextual answers from
+                Ask Unvios anything and get instant, contextual answers from
                 your memories
               </p>
             </div>
@@ -248,7 +246,7 @@ export default function HomePage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Why Memora?
+              Why Unvios?
             </h2>
             <p className="text-xl text-gray-600">
               Stop juggling apps. Start remembering everything.
@@ -281,7 +279,7 @@ export default function HomePage() {
               <div className="absolute top-4 right-4 bg-orange-600 text-white text-xs font-bold px-3 py-1 rounded-full">
                 BEST CHOICE
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Memora</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">Unvios</h3>
               <ul className="space-y-4">
                 {[
                   "AI auto-organizes everything",
@@ -373,7 +371,7 @@ export default function HomePage() {
                   Choose Your Journey
                 </h3>
                 <p className="text-orange-50 mb-6">
-                  Whether you're a learner, reflector, or creator, Memora adapts
+                  Whether you're a learner, reflector, or creator, Unvios adapts
                   to your cognitive style with personalized insights and
                   tracking.
                 </p>
@@ -430,19 +428,19 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                text: "Memora changed how I work. I capture ideas on the go and they're always there when I need them. Game changer.",
+                text: "Unvios changed how I work. I capture ideas on the go and they're always there when I need them. Game changer.",
                 author: "Sarah Chen",
                 role: "Product Designer",
                 avatar: "from-purple-400 to-purple-600",
               },
               {
-                text: "I used to lose brilliant ideas. Now they're all in WhatsApp with Memora. It's like having a second brain.",
+                text: "I used to lose brilliant ideas. Now they're all in WhatsApp with Unvios. It's like having a second brain.",
                 author: "Marcus Rodriguez",
                 role: "Startup Founder",
                 avatar: "from-blue-400 to-blue-600",
               },
               {
-                text: "The voice transcription is incredible. I record thoughts while driving and Memora makes them searchable instantly.",
+                text: "The voice transcription is incredible. I record thoughts while driving and Unvios makes them searchable instantly.",
                 author: "Priya Patel",
                 role: "Content Creator",
                 avatar: "from-green-400 to-green-600",
@@ -582,8 +580,8 @@ export default function HomePage() {
           <div className="space-y-4">
             {[
               {
-                q: "How does Memora work with WhatsApp?",
-                a: "Memora integrates directly with WhatsApp. You simply chat with Memora like any other contact. Send text, voice notes, or forward messages, and Memora captures everything.",
+                q: "How does Unvios work with WhatsApp?",
+                a: "Unvios integrates directly with WhatsApp. You simply chat with Unvios like any other contact. Send text, voice notes, or forward messages, and Unvios captures everything.",
               },
               {
                 q: "Is my data private and secure?",
@@ -595,7 +593,7 @@ export default function HomePage() {
               },
               {
                 q: "Does it work offline?",
-                a: "Memora needs internet to process and store memories. However, once captured, you can search and recall memories even with slow connections.",
+                a: "Unvios needs internet to process and store memories. However, once captured, you can search and recall memories even with slow connections.",
               },
               {
                 q: "How accurate is the voice transcription?",

@@ -1,6 +1,6 @@
 # Next.js SaaS Starter
 
-[![CI](https://github.com/olserra/memora-app/actions/workflows/test.yml/badge.svg)](https://github.com/olserra/memora-app/actions/workflows/test.yml)
+[![CI](https://github.com/olserra/unvios-app/actions/workflows/test.yml/badge.svg)](https://github.com/olserra/unvios-app/actions/workflows/test.yml)
 
 This is a starter template for building a SaaS application using **Next.js** with support for authentication, Stripe integration for payments, and a dashboard for logged-in users.
 

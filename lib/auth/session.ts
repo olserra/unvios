@@ -24,11 +24,11 @@ if (!rawAuthSecret) {
     // when the module is reloaded during development (HMR).
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const g = globalThis as any;
-    if (g.__MEMORA_DEV_AUTH_SECRET) {
-      authSecretToUse = g.__MEMORA_DEV_AUTH_SECRET as string;
+    if (g.__UNVIOS_DEV_AUTH_SECRET) {
+      authSecretToUse = g.__UNVIOS_DEV_AUTH_SECRET as string;
     } else {
       authSecretToUse = randomBytes(32).toString("hex");
-      g.__MEMORA_DEV_AUTH_SECRET = authSecretToUse;
+  g.__UNVIOS_DEV_AUTH_SECRET = authSecretToUse;
       // eslint-disable-next-line no-console
       console.warn(
         "Warning: AUTH_SECRET is not set. Using an auto-generated secret for development. Set AUTH_SECRET in your .env to persist sessions across restarts."

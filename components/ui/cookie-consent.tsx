@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import * as React from "react";
 
-const COOKIE_NAME = "memora_cookie_consent";
+const COOKIE_NAME = "unvios_cookie_consent";
 
 function setConsent(value: "accepted" | "declined") {
   try {
@@ -61,7 +61,7 @@ export default function CookieConsent() {
       typeof (globalThis as any).CustomEvent === "function"
     ) {
       (globalThis as any).dispatchEvent(
-        new (globalThis as any).CustomEvent("memora:cookie-consent", {
+        new (globalThis as any).CustomEvent("unvios:cookie-consent", {
           detail: { consent: "accepted" },
         })
       );
@@ -77,7 +77,7 @@ export default function CookieConsent() {
       typeof (globalThis as any).CustomEvent === "function"
     ) {
       (globalThis as any).dispatchEvent(
-        new (globalThis as any).CustomEvent("memora:cookie-consent", {
+        new (globalThis as any).CustomEvent("unvios:cookie-consent", {
           detail: { consent: "declined" },
         })
       );

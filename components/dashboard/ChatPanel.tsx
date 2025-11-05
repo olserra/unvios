@@ -132,7 +132,7 @@ export default function ChatPanel() {
                 <Brain className="w-8 h-8 text-orange-600" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Chat with Memora
+                Chat with Unvios
               </h3>
               <p className="text-sm text-gray-500 max-w-sm">
                 Ask me anything about your memories. I can help you search,
@@ -177,7 +177,7 @@ export default function ChatPanel() {
                       <Brain className="w-3.5 h-3.5 text-orange-600" />
                     </div>
                     <span className="text-xs font-medium text-gray-700">
-                      Memora
+                      Unvios
                     </span>
                   </div>
                 )}
@@ -215,7 +215,7 @@ export default function ChatPanel() {
                     ))}
                   </div>
                   <span className="text-xs text-gray-500">
-                    Memora is thinking...
+                    Unvios is thinking...
                   </span>
                 </div>
               </div>

@@ -106,9 +106,9 @@ export default function MemoryEditor({ memory, onClose, onSaved }: Props) {
             e.stopPropagation();
           } catch {}
           try {
-            (globalThis as any).__memora_ignore_next_click = true;
+            (globalThis as any).__unvios_ignore_next_click = true;
             setTimeout(() => {
-              (globalThis as any).__memora_ignore_next_click = false;
+              (globalThis as any).__unvios_ignore_next_click = false;
             }, 50);
           } catch {}
           onClose();

@@ -17,8 +17,8 @@ Add a simple, explicit cookie consent banner that appears fixed at the bottom of
 Implementation specifics
 -----------------------
 - Client component: `components/ui/cookie-consent.tsx` (client component). Renders a bottom banner using existing UI primitives (`Button`).
-- Persistence: store result in a cookie named `memora_cookie_consent` (max-age 1 year, SameSite=Lax, Secure when HTTPS) and mirror to `localStorage` as a fallback when cookies are blocked.
-- Event: dispatch a DOM CustomEvent `memora:cookie-consent` with detail `{ consent: 'accepted' | 'declined' }` so analytics or other client code can conditionally initialize.
+- Persistence: store result in a cookie named `unvios_cookie_consent` (max-age 1 year, SameSite=Lax, Secure when HTTPS) and mirror to `localStorage` as a fallback when cookies are blocked.
+- Event: dispatch a DOM CustomEvent `unvios:cookie-consent` with detail `{ consent: 'accepted' | 'declined' }` so analytics or other client code can conditionally initialize.
 - Privacy link: banner includes link to `/privacy` which contains the privacy policy and a contact mailto link.
 - Root layout: banner rendered from `app/layout.tsx` (imported and included) so it appears site-wide.
 - Hydration note: to avoid noisy console warnings caused by client-side differences (extensions or client-only attributes), `suppressHydrationWarning` was added to the `<body>` in `app/layout.tsx`. This does not change SSR HTML — it only suppresses the hydration warning for differences on the body element.
@@ -34,7 +34,7 @@ Consequences & Migration
 ------------------------
 - No database migrations required.
 - Existing users remain unaffected. New visitors will be shown the banner until they choose Accept or Decline.
-- To enable analytics or other systems on consent, developers should listen for `memora:cookie-consent` in client-side code and initialize/disable services accordingly.
+- To enable analytics or other systems on consent, developers should listen for `unvios:cookie-consent` in client-side code and initialize/disable services accordingly.
 
 Rollback
 --------
@@ -43,7 +43,7 @@ Rollback
 Next steps
 ----------
 - (Optional) Add a "Manage Preferences" UI to choose granular consent (analytics, personalization, marketing).
-- Wire analytics initialization to the `memora:cookie-consent` event (only initialize when `consent === 'accepted'`).
+- Wire analytics initialization to the `unvios:cookie-consent` event (only initialize when `consent === 'accepted'`).
 - Add automated client tests to verify cookie/localStorage writes and event emission.
 
 References

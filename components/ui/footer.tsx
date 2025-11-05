@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { TiSpiral } from "react-icons/ti";
 // using simple emoji for social icons to avoid deprecated lucide exports
 
 export default function Footer() {
@@ -93,8 +94,8 @@ export default function Footer() {
         <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex flex-col md:flex-row items-center gap-2">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-orange-600"></div>
-              <span className="text-xl font-bold text-white">Memora</span>
+              <TiSpiral className="w-8 h-8 text-orange-500" />
+              <span className="text-xl font-bold text-white">Unvios</span>
             </div>
             <div className="text-xs text-gray-400 md:ml-3">
               Science-backed memory augmentation — neuro-inspired indexing, RAG,
@@ -104,7 +105,7 @@ export default function Footer() {
 
           <div className="flex items-center gap-6">
             <div className="text-sm text-gray-400">
-              © {year} Memora. All rights reserved.
+              © {year} Unvios. All rights reserved.
             </div>
             <div className="h-6 w-px bg-gray-800" aria-hidden />
             <div className="flex gap-4">
@@ -113,7 +114,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white transition-colors hover:text-orange-400"
-                aria-label="Memora on Twitter"
+                aria-label="Unvios on Twitter"
               >
                 <span aria-hidden className="text-2xl">
                   🐦
@@ -125,7 +126,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white transition-colors hover:text-orange-400"
-                aria-label="Memora on LinkedIn"
+                aria-label="Unvios on LinkedIn"
               >
                 <span aria-hidden className="text-2xl">
                   💼
@@ -137,7 +138,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white transition-colors hover:text-orange-400"
-                aria-label="Memora on GitHub"
+                aria-label="Unvios on GitHub"
               >
                 <span aria-hidden className="text-2xl">
                   🐙

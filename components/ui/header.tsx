@@ -13,7 +13,6 @@ import { User } from "@/lib/db/schema";
 import {
   Activity,
   Bookmark,
-  CircleIcon,
   LogOut,
   MessageSquare,
   Settings,
@@ -23,6 +22,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Suspense, useState } from "react";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
+import { TiSpiral } from "react-icons/ti";
 import useSWR, { mutate } from "swr";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -158,10 +158,10 @@ function Logo() {
   const { data: user } = useSWR<User>("/api/user", fetcher);
 
   const logoContent = (
-    <>
-      <CircleIcon className="h-6 w-6 text-orange-500" />
-      <span className="ml-2 text-xl font-semibold text-gray-900">MEMORA</span>
-    </>
+    <div className="flex items-center gap-2">
+      <TiSpiral className="w-8 h-8 text-orange-500" />
+      <span className="text-xl font-bold text-gray-900">Unvios</span>
+    </div>
   );
 
   // If user is not logged in, make logo clickable and redirect to home

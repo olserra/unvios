@@ -19,7 +19,7 @@ export default function BlogPage() {
             <h1 className="text-4xl font-bold text-gray-900">Blog</h1>
             <p className="mt-4 text-lg text-gray-600">
               Insights, product updates, and short guides about remembering
-              better with Memora.
+              better with Unvios.
             </p>
           </div>
 

@@ -74,7 +74,7 @@ export default function MemoriesPanel() {
     }
 
     if (data && items.length === 0) {
-      const hasSeenOnboarding = localStorage.getItem("memora_onboarding_seen");
+      const hasSeenOnboarding = localStorage.getItem("unvios_onboarding_seen");
       if (!hasSeenOnboarding) {
         setShowOnboarding(true);
       }
@@ -83,7 +83,7 @@ export default function MemoriesPanel() {
 
   const handleOnboardingComplete = () => {
     setShowOnboarding(false);
-    localStorage.setItem("memora_onboarding_seen", "true");
+    localStorage.setItem("unvios_onboarding_seen", "true");
   };
 
   const tags = useMemo(() => {
@@ -294,7 +294,7 @@ export default function MemoriesPanel() {
               key={m.id}
               className="hover:shadow-lg transition-all cursor-pointer border-0 shadow-sm hover:scale-[1.02] group h-full"
               onClick={() => {
-                if ((globalThis as any).__memora_ignore_next_click) return;
+                if ((globalThis as any).__unvios_ignore_next_click) return;
                 setEditing(m);
                 setEditorOpen(true);
               }}
@@ -334,7 +334,7 @@ export default function MemoriesPanel() {
               key={m.id}
               className="w-full text-left p-4 rounded-xl hover:bg-gray-50 transition-all border border-transparent hover:border-gray-200 group"
               onClick={() => {
-                if ((globalThis as any).__memora_ignore_next_click) return;
+                if ((globalThis as any).__unvios_ignore_next_click) return;
                 setEditing(m);
                 setEditorOpen(true);
               }}

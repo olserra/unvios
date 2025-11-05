@@ -103,7 +103,7 @@ Implication for backend integrations: if you write records directly into the DB,
   2. The server builds a prompt including retrieved memories and asks the configured LLM for a response.
   3. The LLM is instructed to include memory markers in this exact format when it decides a memory should be saved:
      - `[MEMORY: <content> | tag1, tag2, tag3]` (tags optional but recommended). Example:
-       - `Memora: "Great — I'll remember that. [MEMORY: User likes pasta | food, preference, italian]"`
+       - `Unvios: "Great — I'll remember that. [MEMORY: User likes pasta | food, preference, italian]"`
   4. The server scans the LLM output using the regex `/\[MEMORY:\s*(.*?)\s*\|\s*(.*?)\]/g` to extract memory content and tags.
   5. Before saving a memory:
      - The server optionaly computes an embedding for the new memory content and checks for duplicates via `getNearestMemoriesForUser`. If the nearest memory is too similar (distance < 0.15), it will skip saving.

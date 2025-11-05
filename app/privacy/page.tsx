@@ -1,9 +1,9 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Privacy Policy - Memora",
+  title: "Privacy Policy - Unvios",
   description:
-    "Memora's privacy policy — what we collect, why, and how we protect your data.",
+    "Unvios's privacy policy — what we collect, why, and how we protect your data.",
 };
 
 export default function PrivacyPage() {
@@ -12,7 +12,7 @@ export default function PrivacyPage() {
       <h1 className="text-3xl font-bold mb-6">Privacy Policy</h1>
 
       <p className="text-base text-muted-foreground mb-4">
-        Memora is committed to protecting your privacy. This page explains what
+        Unvios is committed to protecting your privacy. This page explains what
         data we collect, why we collect it, and how you can control it.
       </p>
 
