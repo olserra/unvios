@@ -4,11 +4,28 @@ import Link from "next/link";
 
 export const metadata = {
   title: "About — Unvios",
+  description:
+    "Learn about Unvios Lab: experiments, timelines, and research in memory augmentation.",
   openGraph: {
-    images: "/metadata-img.png",
+    title: "About — Unvios",
+    description:
+      "Learn about Unvios Lab: experiments, timelines, and research in memory augmentation.",
+    type: "website",
+    images: [
+      {
+        url: "/metadata-img.png",
+        width: 1200,
+        height: 630,
+        alt: "Unvios - Your Personal Memory Assistant",
+      },
+    ],
   },
   twitter: {
-    images: "/metadata-img.png",
+    card: "summary_large_image",
+    title: "About — Unvios",
+    description:
+      "Learn about Unvios Lab: experiments, timelines, and research in memory augmentation.",
+    images: ["/metadata-img.png"],
   },
 };
 

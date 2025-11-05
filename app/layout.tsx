@@ -15,10 +15,23 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
   ),
   openGraph: {
-    images: "/metadata-img.png",
+    title: "Unvios - Your Personal Memory Assistant",
+    description: "Never forget anything again with Unvios.",
+    type: "website",
+    images: [
+      {
+        url: "/metadata-img.png",
+        width: 1200,
+        height: 630,
+        alt: "Unvios - Your Personal Memory Assistant",
+      },
+    ],
   },
   twitter: {
-    images: "/metadata-img.png",
+    card: "summary_large_image",
+    title: "Unvios - Your Personal Memory Assistant",
+    description: "Never forget anything again with Unvios.",
+    images: ["/metadata-img.png"],
   },
 };
 

@@ -17,10 +17,25 @@ export const metadata = {
   description:
     "Get help with Unvios. Find answers to common questions, guides, and support resources.",
   openGraph: {
-    images: "/metadata-img.png",
+    title: "Help Center — Unvios",
+    description:
+      "Get help with Unvios. Find answers to common questions, guides, and support resources.",
+    type: "website",
+    images: [
+      {
+        url: "/metadata-img.png",
+        width: 1200,
+        height: 630,
+        alt: "Unvios - Your Personal Memory Assistant",
+      },
+    ],
   },
   twitter: {
-    images: "/metadata-img.png",
+    card: "summary_large_image",
+    title: "Help Center — Unvios",
+    description:
+      "Get help with Unvios. Find answers to common questions, guides, and support resources.",
+    images: ["/metadata-img.png"],
   },
 };
 
