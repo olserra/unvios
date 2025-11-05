@@ -4,6 +4,12 @@ export const metadata = {
   title: "Privacy Policy - Unvios",
   description:
     "Unvios's privacy policy — what we collect, why, and how we protect your data.",
+  openGraph: {
+    images: "/metadata-img.png",
+  },
+  twitter: {
+    images: "/metadata-img.png",
+  },
 };
 
 export default function PrivacyPage() {

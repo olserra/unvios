@@ -16,6 +16,12 @@ export const metadata = {
   title: "Help Center — Unvios",
   description:
     "Get help with Unvios. Find answers to common questions, guides, and support resources.",
+  openGraph: {
+    images: "/metadata-img.png",
+  },
+  twitter: {
+    images: "/metadata-img.png",
+  },
 };
 
 export default function HelpCenterPage() {

@@ -17,6 +17,12 @@ export const metadata = {
   title: "Research — Unvios",
   description:
     "Partnering with researchers worldwide in cognitive science, AI, and neuroscience to advance human memory augmentation with a mental health-first approach.",
+  openGraph: {
+    images: "/metadata-img.png",
+  },
+  twitter: {
+    images: "/metadata-img.png",
+  },
 };
 
 export default function ResearchPage() {

@@ -4,6 +4,12 @@ export const metadata = {
   title: "Terms of Service - Unvios",
   description:
     "Unvios's terms of service — the rules and guidelines for using our memory management platform.",
+  openGraph: {
+    images: "/metadata-img.png",
+  },
+  twitter: {
+    images: "/metadata-img.png",
+  },
 };
 
 export default function TermsPage() {

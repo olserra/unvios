@@ -4,6 +4,12 @@ import Link from "next/link";
 
 export const metadata = {
   title: "About — Unvios",
+  openGraph: {
+    images: "/metadata-img.png",
+  },
+  twitter: {
+    images: "/metadata-img.png",
+  },
 };
 
 export default function AboutPage() {

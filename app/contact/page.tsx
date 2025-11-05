@@ -4,6 +4,12 @@ import Link from "next/link";
 export const metadata = {
   title: "Contact — Unvios",
   description: "Get in touch with the Unvios team",
+  openGraph: {
+    images: "/metadata-img.png",
+  },
+  twitter: {
+    images: "/metadata-img.png",
+  },
 };
 
 export default function ContactPage() {
