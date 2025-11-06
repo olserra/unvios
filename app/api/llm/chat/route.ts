@@ -7,11 +7,25 @@ import {
 } from "@/lib/db/queries";
 import { memories } from "@/lib/db/schema";
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 type ChatRequest = {
   message: string;
   conversationHistory?: Array<{ role: string; content: string }>;
 };
+
+const chatRequestSchema = z.object({
+  message: z.string().min(1, "Message is required").max(5000, "Message too long"),
+  conversationHistory: z
+    .array(
+      z.object({
+        role: z.string(),
+        content: z.string().max(10000),
+      })
+    )
+    .max(50, "Conversation history too long")
+    .optional(),
+});
 
 function normalizeOutput(json: any) {
   let output: string | undefined =
@@ -63,11 +77,20 @@ async function embedText(text: string): Promise<number[] | undefined> {
     return undefined;
   }
   const j = await res.json();
-  if (Array.isArray(j) && typeof j[0] === "number") return j as number[];
-  if (Array.isArray(j.embedding) && typeof j.embedding[0] === "number")
-    return j.embedding as number[];
-  if (Array.isArray(j) && Array.isArray(j[0])) return j[0] as number[];
-  return undefined;
+  
+  let vec: number[] | undefined;
+  if (Array.isArray(j) && typeof j[0] === "number") vec = j as number[];
+  else if (Array.isArray(j.embedding) && typeof j.embedding[0] === "number")
+    vec = j.embedding as number[];
+  else if (Array.isArray(j) && Array.isArray(j[0])) vec = j[0] as number[];
+  
+  // SECURITY: Validate embedding contains only valid numbers
+  if (vec && !vec.every((n) => typeof n === "number" && Number.isFinite(n))) {
+    console.warn("Embedding service returned invalid vector data");
+    return undefined;
+  }
+  
+  return vec;
 }
 
 async function checkDuplicate(
@@ -200,8 +223,18 @@ Unvios:`,
 
 export async function POST(req: NextRequest) {
   try {
-    const body: ChatRequest = await req.json();
-    const message = body?.message || "";
+    const body = await req.json();
+    
+    // SECURITY: Validate input against schema
+    const validation = chatRequestSchema.safeParse(body);
+    if (!validation.success) {
+      return NextResponse.json(
+        { error: validation.error.errors[0].message },
+        { status: 400 }
+      );
+    }
+    
+    const { message } = validation.data;
 
     const session = await getSession();
     if (!session)

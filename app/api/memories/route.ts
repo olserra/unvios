@@ -3,6 +3,13 @@ import { getMemoriesGrouped, getUser } from "@/lib/db/queries";
 import { memories } from "@/lib/db/schema";
 import * as dev from "@/lib/devMemories";
 import { NextResponse } from "next/server";
+import { z } from "zod";
+
+const createMemorySchema = z.object({
+  content: z.string().min(1, "Content is required").max(10000, "Content too long"),
+  category: z.string().min(1).max(100).optional(),
+  tags: z.array(z.string().max(50)).max(10, "Maximum 10 tags allowed").optional(),
+});
 
 function makeGrouped(list: any[]) {
   const grouped: Record<string, any[]> = {};
@@ -68,7 +75,17 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
 
     const body = await req.json();
-    const { content, category, tags } = body || {};
+    
+    // SECURITY: Validate input against schema
+    const validation = createMemorySchema.safeParse(body);
+    if (!validation.success) {
+      return NextResponse.json(
+        { error: validation.error.errors[0].message },
+        { status: 400 }
+      );
+    }
+    
+    const { content, category, tags } = validation.data;
 
     // B2C app: ignore teamId, use user context only
     // allow dev fallback via env or on DB errors

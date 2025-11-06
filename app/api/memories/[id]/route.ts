@@ -2,7 +2,7 @@ import { db } from "@/lib/db/drizzle";
 import { getUser } from "@/lib/db/queries";
 import { memories } from "@/lib/db/schema";
 import * as dev from "@/lib/devMemories";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(req: NextRequest, { params }: any) {
@@ -34,6 +34,7 @@ export async function PUT(req: NextRequest, { params }: any) {
     }
 
     try {
+      // SECURITY: Verify memory belongs to user before updating (IDOR protection)
       const [updated] = await db
         .update(memories)
         .set({
@@ -41,8 +42,18 @@ export async function PUT(req: NextRequest, { params }: any) {
           category: category ?? "general",
           tags: tags ? JSON.stringify(tags.slice(0, 3)) : JSON.stringify([]),
         })
-        .where(eq(memories.id, id))
+        .where(
+          // Only update if memory belongs to the authenticated user
+          and(eq(memories.id, id), eq(memories.userId, user.id))
+        )
         .returning();
+
+      if (!updated) {
+        return NextResponse.json(
+          { error: "Memory not found or unauthorized" },
+          { status: 404 }
+        );
+      }
 
       return NextResponse.json({ memory: updated });
     } catch (error_: unknown) {
@@ -85,7 +96,19 @@ export async function DELETE(_req: NextRequest, { params }: any) {
     }
 
     try {
-      await db.delete(memories).where(eq(memories.id, id));
+      // SECURITY: Verify memory belongs to user before deleting (IDOR protection)
+      const deleted = await db
+        .delete(memories)
+        .where(and(eq(memories.id, id), eq(memories.userId, user.id)))
+        .returning();
+
+      if (!deleted || deleted.length === 0) {
+        return NextResponse.json(
+          { error: "Memory not found or unauthorized" },
+          { status: 404 }
+        );
+      }
+
       return NextResponse.json({ ok: true });
     } catch (error_: unknown) {
       // eslint-disable-next-line no-console

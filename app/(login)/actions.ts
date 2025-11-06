@@ -87,7 +87,14 @@ export const signIn = validatedAction(signInSchema, async (data, formData) => {
 
 const signUpSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(8),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .max(100)
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+      "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+    ),
   inviteId: z.string().optional(),
 });
 
@@ -146,11 +153,23 @@ export async function signOut() {
   (await cookies()).delete("session");
 }
 
-const updatePasswordSchema = z.object({
-  currentPassword: z.string().min(8).max(100),
-  newPassword: z.string().min(8).max(100),
-  confirmPassword: z.string().min(8).max(100),
-});
+const updatePasswordSchema = z
+  .object({
+    currentPassword: z.string().min(8).max(100),
+    newPassword: z
+      .string()
+      .min(8, "Password must be at least 8 characters")
+      .max(100)
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+        "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+      ),
+    confirmPassword: z.string().min(8).max(100),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
 
 export const updatePassword = validatedActionWithUser(
   updatePasswordSchema,
