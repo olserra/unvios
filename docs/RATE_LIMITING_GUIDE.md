@@ -77,9 +77,16 @@ export const apiRateLimit = new Ratelimit({
 export async function checkRateLimit(
   identifier: string,
   limiter: Ratelimit
-): Promise<{ success: boolean; limit: number; remaining: number; reset: number } | null> {
+): Promise<{
+  success: boolean;
+  limit: number;
+  remaining: number;
+  reset: number;
+} | null> {
   try {
-    const { success, limit, remaining, reset } = await limiter.limit(identifier);
+    const { success, limit, remaining, reset } = await limiter.limit(
+      identifier
+    );
     return { success, limit, remaining, reset };
   } catch (error) {
     console.error("Rate limit check failed:", error);
@@ -100,24 +107,29 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   // Get IP address for rate limiting
   const ip = req.ip ?? req.headers.get("x-forwarded-for") ?? "anonymous";
-  
+
   // Check rate limit
-  const rateLimitResult = await checkRateLimit(`auth:login:${ip}`, authRateLimit);
-  
+  const rateLimitResult = await checkRateLimit(
+    `auth:login:${ip}`,
+    authRateLimit
+  );
+
   if (rateLimitResult && !rateLimitResult.success) {
     return NextResponse.json(
-      { 
+      {
         error: "Too many login attempts. Please try again later.",
-        retryAfter: rateLimitResult.reset 
+        retryAfter: rateLimitResult.reset,
       },
-      { 
+      {
         status: 429,
         headers: {
           "X-RateLimit-Limit": rateLimitResult.limit.toString(),
           "X-RateLimit-Remaining": rateLimitResult.remaining.toString(),
           "X-RateLimit-Reset": rateLimitResult.reset.toString(),
-          "Retry-After": Math.ceil((rateLimitResult.reset - Date.now()) / 1000).toString(),
-        }
+          "Retry-After": Math.ceil(
+            (rateLimitResult.reset - Date.now()) / 1000
+          ).toString(),
+        },
       }
     );
   }
@@ -144,15 +156,18 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   const ip = req.ip ?? req.headers.get("x-forwarded-for") ?? "anonymous";
-  
+
   // Stricter limit for signup (3 per hour)
-  const rateLimitResult = await checkRateLimit(`auth:signup:${ip}`, authRateLimit);
-  
+  const rateLimitResult = await checkRateLimit(
+    `auth:signup:${ip}`,
+    authRateLimit
+  );
+
   if (rateLimitResult && !rateLimitResult.success) {
     return NextResponse.json(
-      { 
+      {
         error: "Too many signup attempts. Please try again later.",
-        retryAfter: rateLimitResult.reset 
+        retryAfter: rateLimitResult.reset,
       },
       { status: 429 }
     );
@@ -186,14 +201,14 @@ export async function POST(req: NextRequest) {
       `chat:${user.id}`,
       chatRateLimit
     );
-    
+
     if (rateLimitResult && !rateLimitResult.success) {
       return NextResponse.json(
-        { 
+        {
           error: "Too many chat requests. Please slow down.",
-          retryAfter: rateLimitResult.reset 
+          retryAfter: rateLimitResult.reset
         },
-        { 
+        {
           status: 429,
           headers: {
             "X-RateLimit-Limit": rateLimitResult.limit.toString(),
@@ -229,12 +244,12 @@ export async function POST(req: Request) {
       `memory:create:${user.id}`,
       memoryRateLimit
     );
-    
+
     if (rateLimitResult && !rateLimitResult.success) {
       return NextResponse.json(
-        { 
+        {
           error: "Too many memories created. Please slow down.",
-          retryAfter: rateLimitResult.reset 
+          retryAfter: rateLimitResult.reset
         },
         { status: 429 }
       );
@@ -278,10 +293,12 @@ export class SimpleRateLimit {
     });
   }
 
-  async limit(identifier: string): Promise<{ success: boolean; reset: number }> {
+  async limit(
+    identifier: string
+  ): Promise<{ success: boolean; reset: number }> {
     const now = Date.now();
     const timestamps = this.cache.get(identifier) || [];
-    
+
     // Remove expired timestamps
     const validTimestamps = timestamps.filter(
       (timestamp) => now - timestamp < this.interval
@@ -295,10 +312,10 @@ export class SimpleRateLimit {
 
     validTimestamps.push(now);
     this.cache.set(identifier, validTimestamps);
-    
-    return { 
-      success: true, 
-      reset: now + this.interval 
+
+    return {
+      success: true,
+      reset: now + this.interval,
     };
   }
 }
@@ -324,11 +341,13 @@ export const memoryLimiter = new SimpleRateLimit({
 ```
 
 Install LRU Cache:
+
 ```bash
 pnpm add lru-cache
 ```
 
 Usage is similar to Option 1, but note:
+
 - ⚠️ Rate limits are per-instance (won't work across serverless functions)
 - ⚠️ Resets on deployment
 - ⚠️ Memory usage grows with number of unique users
@@ -348,9 +367,9 @@ Usage is similar to Option 1, but note:
 // Test authentication rate limit
 async function testAuthRateLimit() {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-  
+
   console.log("Testing auth rate limit...");
-  
+
   for (let i = 0; i < 7; i++) {
     const response = await fetch(`${baseUrl}/api/auth/login`, {
       method: "POST",
@@ -360,9 +379,9 @@ async function testAuthRateLimit() {
         password: "wrongpassword",
       }),
     });
-    
+
     console.log(`Attempt ${i + 1}:`, response.status);
-    
+
     if (response.status === 429) {
       const data = await response.json();
       console.log("Rate limited:", data);
@@ -375,6 +394,7 @@ testAuthRateLimit();
 ```
 
 Run with:
+
 ```bash
 npx tsx scripts/test-rate-limit.ts
 ```
@@ -404,7 +424,7 @@ if (!rateLimitResult.success) {
     ip: req.ip,
     timestamp: new Date().toISOString(),
   });
-  
+
   // Optional: Send to monitoring service
   // await sendToMonitoring({ ... });
 }
@@ -422,18 +442,21 @@ if (!rateLimitResult.success) {
 ## Rollout Strategy
 
 ### Phase 1: Monitoring Mode (Week 1)
+
 - Implement rate limiting
 - Log violations but don't block
 - Monitor for false positives
 - Adjust limits as needed
 
 ### Phase 2: Soft Limits (Week 2)
+
 - Start blocking extreme violations
 - Keep generous limits
 - Monitor user complaints
 - Fine-tune based on real usage
 
 ### Phase 3: Production Limits (Week 3+)
+
 - Apply recommended limits
 - Monitor continuously
 - Provide user feedback for rate-limited requests
@@ -445,16 +468,17 @@ if (!rateLimitResult.success) {
 
 ### Current Recommended Limits:
 
-| Endpoint | Limit | Window | Identifier |
-|----------|-------|--------|------------|
-| `/api/auth/login` | 5 | 15 min | IP address |
-| `/api/auth/signup` | 3 | 1 hour | IP address |
-| `/api/llm/chat` | 20 | 1 min | User ID |
-| `/api/memories` (POST) | 100 | 1 hour | User ID |
-| `/api/memories` (GET) | 200 | 1 hour | User ID |
-| `/api/memories/[id]` | 60 | 1 min | User ID |
+| Endpoint               | Limit | Window | Identifier |
+| ---------------------- | ----- | ------ | ---------- |
+| `/api/auth/login`      | 5     | 15 min | IP address |
+| `/api/auth/signup`     | 3     | 1 hour | IP address |
+| `/api/llm/chat`        | 20    | 1 min  | User ID    |
+| `/api/memories` (POST) | 100   | 1 hour | User ID    |
+| `/api/memories` (GET)  | 200   | 1 hour | User ID    |
+| `/api/memories/[id]`   | 60    | 1 min  | User ID    |
 
 ### Adjust Based On:
+
 - Actual user patterns
 - LLM API costs
 - Server capacity
@@ -465,11 +489,13 @@ if (!rateLimitResult.success) {
 ## Cost Considerations
 
 ### Upstash Pricing (as of 2025):
+
 - Free tier: 10,000 commands/day
 - Pay-as-you-go: $0.20 per 100,000 commands
 - Expected cost for 1,000 active users: ~$5-10/month
 
 ### In-Memory Pricing:
+
 - $0 (uses existing server resources)
 - May increase serverless function memory/CPU costs slightly
 
@@ -489,5 +515,6 @@ if (!rateLimitResult.success) {
 ---
 
 For questions or issues, refer to:
+
 - [Upstash Rate Limit Docs](https://upstash.com/docs/redis/sdks/ratelimit/overview)
 - [Rate Limiting Best Practices](https://cloud.google.com/architecture/rate-limiting-strategies-techniques)

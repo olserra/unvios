@@ -1,7 +1,7 @@
 # Security Audit and Vulnerability Fixes
 
-**Date**: 2025-11-05  
-**Status**: Proposed  
+**Date**: 2025-11-05
+**Status**: Proposed
 **Decision Makers**: Development Team
 
 ## Context
@@ -17,14 +17,16 @@ A comprehensive security audit was conducted on the Unvios application, focusing
 **Issue**: The `PUT` and `DELETE` endpoints for individual memories do not verify that the memory belongs to the authenticated user before modification/deletion.
 
 **Current Code**:
+
 ```typescript
 export async function PUT(req: NextRequest, { params }: any) {
   const user = await getUser();
-  if (!user) return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
-  
+  if (!user)
+    return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+
   const { id: idParam } = await params;
   const id = Number(idParam);
-  
+
   // Updates memory without checking if memory.userId === user.id
   const [updated] = await db
     .update(memories)
@@ -48,7 +50,8 @@ export async function PUT(req: NextRequest, { params }: any) {
 
 **Issue**: No rate limiting implemented on any API endpoint.
 
-**Impact**: 
+**Impact**:
+
 - Brute force attacks on `/api/auth/login` and `/api/auth/signup`
 - DoS attacks on `/api/llm/chat` (expensive LLM calls)
 - Resource exhaustion on memory creation endpoints
@@ -57,6 +60,7 @@ export async function PUT(req: NextRequest, { params }: any) {
 **Severity**: CRITICAL
 
 **Fix Required**: Implement rate limiting middleware, especially for:
+
 - Authentication endpoints (max 5 attempts per 15 minutes)
 - LLM chat endpoint (max 20 requests per minute per user)
 - Memory creation (max 100 per hour per user)
@@ -70,6 +74,7 @@ export async function PUT(req: NextRequest, { params }: any) {
 **Issue**: Vector arrays are concatenated into SQL strings instead of using proper parameterization.
 
 **Current Code**:
+
 ```typescript
 const vecStr = "[" + vec.join(",") + "]";
 await client.unsafe(
@@ -83,9 +88,10 @@ await client.unsafe(
 **Severity**: HIGH
 
 **Fix Required**: Validate vector array contains only numbers before concatenation:
+
 ```typescript
-if (!vec.every(n => typeof n === 'number' && isFinite(n))) {
-  throw new Error('Invalid vector data');
+if (!vec.every((n) => typeof n === "number" && isFinite(n))) {
+  throw new Error("Invalid vector data");
 }
 ```
 
@@ -98,8 +104,9 @@ if (!vec.every(n => typeof n === 'number' && isFinite(n))) {
 **Issue**: Password validation only checks minimum length of 8 characters, no complexity requirements.
 
 **Current Code**:
+
 ```typescript
-password: z.string().min(8).max(100)
+password: z.string().min(8).max(100);
 ```
 
 **Impact**: Users can create weak passwords like "12345678" or "aaaaaaaa".
@@ -107,12 +114,15 @@ password: z.string().min(8).max(100)
 **Severity**: MEDIUM-HIGH
 
 **Fix Required**: Add password complexity validation:
+
 ```typescript
 password: z.string()
   .min(8)
   .max(100)
-  .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, 
-    'Password must contain at least one uppercase letter, one lowercase letter, and one number')
+  .regex(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+    "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+  );
 ```
 
 ---
@@ -139,7 +149,8 @@ password: z.string()
 
 **Issue**: No security headers configured (CSP, X-Frame-Options, etc.).
 
-**Impact**: 
+**Impact**:
+
 - XSS attacks not mitigated
 - Clickjacking possible
 - No MIME-type sniffing protection
@@ -147,6 +158,7 @@ password: z.string()
 **Severity**: MEDIUM-HIGH
 
 **Fix Required**: Add security headers in `next.config.ts`:
+
 ```typescript
 async headers() {
   return [
@@ -188,10 +200,12 @@ async headers() {
 **Issue**: Request bodies are parsed but not validated against schemas before use.
 
 **Examples**:
+
 - `app/api/memories/route.ts` - No validation on `content`, `category`, `tags`
 - `app/api/llm/chat/route.ts` - No validation on `message` length or content
 
-**Impact**: 
+**Impact**:
+
 - Potential for extremely large payloads causing DoS
 - Injection of unexpected data types
 - Database errors from invalid data
@@ -199,6 +213,7 @@ async headers() {
 **Severity**: MEDIUM
 
 **Fix Required**: Add Zod schema validation for all request bodies:
+
 ```typescript
 const createMemorySchema = z.object({
   content: z.string().min(1).max(10000),
@@ -219,6 +234,7 @@ const validated = createMemorySchema.parse(body);
 **Issue**: The `redirectTo` parameter from formData is used without validation.
 
 **Current Code**:
+
 ```typescript
 const redirectTo = formData.get("redirect") as string | null;
 if (redirectTo === "checkout") {
@@ -232,12 +248,14 @@ redirect("/dashboard");
 **Severity**: LOW (currently mitigated but dangerous pattern)
 
 **Fix Required**: If dynamic redirects are needed, validate against allowlist:
+
 ```typescript
-const allowedRedirects = ['/dashboard', '/chat', '/memories'];
+const allowedRedirects = ["/dashboard", "/chat", "/memories"];
 const redirectTo = formData.get("redirect") as string | null;
-const destination = redirectTo && allowedRedirects.includes(redirectTo) 
-  ? redirectTo 
-  : '/dashboard';
+const destination =
+  redirectTo && allowedRedirects.includes(redirectTo)
+    ? redirectTo
+    : "/dashboard";
 redirect(destination);
 ```
 
@@ -250,6 +268,7 @@ redirect(destination);
 **Issue**: Error messages may leak sensitive information.
 
 **Examples**:
+
 ```typescript
 return NextResponse.json(
   { error: err.message || "Failed to create memory" },
@@ -262,10 +281,12 @@ return NextResponse.json(
 **Severity**: LOW-MEDIUM
 
 **Fix Required**: Sanitize error messages in production:
+
 ```typescript
-const errorMessage = process.env.NODE_ENV === 'production' 
-  ? 'Failed to create memory'
-  : err.message || 'Failed to create memory';
+const errorMessage =
+  process.env.NODE_ENV === "production"
+    ? "Failed to create memory"
+    : err.message || "Failed to create memory";
 return NextResponse.json({ error: errorMessage }, { status: 500 });
 ```
 
@@ -278,6 +299,7 @@ return NextResponse.json({ error: errorMessage }, { status: 500 });
 **Issue**: While `httpOnly: true` is set, there's no verification that cookies are actually being sent with this flag.
 
 **Current Code**:
+
 ```typescript
 (await cookies()).set("session", encryptedSession, {
   expires: expiresInOneDay,
@@ -292,11 +314,12 @@ return NextResponse.json({ error: errorMessage }, { status: 500 });
 **Severity**: LOW (currently correct but worth monitoring)
 
 **Fix Required**: Add runtime assertion in development:
+
 ```typescript
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === "development") {
   console.assert(
-    process.env.NODE_ENV !== 'production' || process.env.HTTPS === 'true',
-    'Session cookies must use secure flag in production'
+    process.env.NODE_ENV !== "production" || process.env.HTTPS === "true",
+    "Session cookies must use secure flag in production"
   );
 }
 ```
@@ -310,6 +333,7 @@ if (process.env.NODE_ENV === 'development') {
 **Issue**: Using `dangerouslySetInnerHTML` without DOMPurify or similar sanitization.
 
 **Current Code**:
+
 ```tsx
 dangerouslySetInnerHTML={{ __html: withItalic }}
 ```
@@ -319,6 +343,7 @@ dangerouslySetInnerHTML={{ __html: withItalic }}
 **Severity**: MEDIUM (depends on content source)
 
 **Fix Required**: Sanitize HTML before rendering:
+
 ```typescript
 import DOMPurify from 'isomorphic-dompurify';
 
@@ -385,6 +410,7 @@ dangerouslySetInnerHTML={{ __html: sanitized }}
 **Severity**: MEDIUM
 
 **Fix Required**: Implement security event logging:
+
 - Failed login attempts
 - Invalid token usage
 - Unauthorized access attempts
@@ -395,18 +421,21 @@ dangerouslySetInnerHTML={{ __html: sanitized }}
 ## Recommended Implementation Priority
 
 ### Phase 1 (Immediate - Critical)
+
 1. Fix IDOR vulnerability in memory endpoints
 2. Implement rate limiting on authentication endpoints
 3. Add security headers
 4. Validate vector data before SQL operations
 
 ### Phase 2 (Short-term - High Priority)
+
 5. Strengthen password requirements
 6. Add input validation schemas for all API routes
 7. Sanitize blog HTML rendering
 8. Implement security event logging
 
 ### Phase 3 (Medium-term - Medium Priority)
+
 9. Enhance CSRF protection
 10. Add prompt injection protection for LLM
 11. Implement API response size limits
@@ -415,21 +444,25 @@ dangerouslySetInnerHTML={{ __html: sanitized }}
 ## Migration Plan
 
 ### Step 1: IDOR Fix (Immediate)
+
 - Update `app/api/memories/[id]/route.ts` to verify ownership
 - Add integration tests for authorization
 
 ### Step 2: Rate Limiting (1-2 days)
+
 - Install rate limiting library (e.g., `@upstash/ratelimit` or `express-rate-limit`)
 - Add rate limiting middleware
 - Configure limits per endpoint type
 - Add rate limit headers to responses
 
 ### Step 3: Security Headers (1 day)
+
 - Update `next.config.ts` with security headers
 - Test CSP doesn't break functionality
 - Adjust CSP as needed for third-party integrations
 
 ### Step 4: Input Validation (2-3 days)
+
 - Create Zod schemas for all API request bodies
 - Add validation middleware
 - Update error handling
@@ -437,6 +470,7 @@ dangerouslySetInnerHTML={{ __html: sanitized }}
 ## Rollback Plan
 
 Each change should be:
+
 1. Feature-flagged where possible
 2. Deployed to staging first
 3. Monitored for errors

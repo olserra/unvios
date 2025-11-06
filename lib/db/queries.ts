@@ -45,12 +45,12 @@ export async function getNearestMemoriesForUser(
   limit = 10
 ) {
   if (!vec || vec.length === 0) return [];
-  
+
   // SECURITY: Validate vector contains only valid numbers to prevent SQL injection
   if (!vec.every((n) => typeof n === "number" && Number.isFinite(n))) {
     throw new Error("Invalid vector data: must contain only finite numbers");
   }
-  
+
   const vecStr = "[" + vec.join(",") + "]";
 
   const sql = `SELECT id, content, user_id, category, tags,

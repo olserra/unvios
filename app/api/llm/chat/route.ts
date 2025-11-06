@@ -15,7 +15,10 @@ type ChatRequest = {
 };
 
 const chatRequestSchema = z.object({
-  message: z.string().min(1, "Message is required").max(5000, "Message too long"),
+  message: z
+    .string()
+    .min(1, "Message is required")
+    .max(5000, "Message too long"),
   conversationHistory: z
     .array(
       z.object({
@@ -77,19 +80,19 @@ async function embedText(text: string): Promise<number[] | undefined> {
     return undefined;
   }
   const j = await res.json();
-  
+
   let vec: number[] | undefined;
   if (Array.isArray(j) && typeof j[0] === "number") vec = j as number[];
   else if (Array.isArray(j.embedding) && typeof j.embedding[0] === "number")
     vec = j.embedding as number[];
   else if (Array.isArray(j) && Array.isArray(j[0])) vec = j[0] as number[];
-  
+
   // SECURITY: Validate embedding contains only valid numbers
   if (vec && !vec.every((n) => typeof n === "number" && Number.isFinite(n))) {
     console.warn("Embedding service returned invalid vector data");
     return undefined;
   }
-  
+
   return vec;
 }
 
@@ -224,7 +227,7 @@ Unvios:`,
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    
+
     // SECURITY: Validate input against schema
     const validation = chatRequestSchema.safeParse(body);
     if (!validation.success) {
@@ -233,7 +236,7 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    
+
     const { message } = validation.data;
 
     const session = await getSession();
