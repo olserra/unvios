@@ -131,6 +131,8 @@ export default function GeneralPage() {
         </CardContent>
       </Card>
 
+      <MobileNumberCard />
+
       <Card className="mt-6">
         <CardHeader className="pt-6">
           <CardTitle>Account Actions</CardTitle>
@@ -249,6 +251,275 @@ function SubscriptionCard() {
             </form>
           </div>
         </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function MobileNumberCard() {
+  const { data: user, mutate } = useSWR<User>("/api/user", fetcher);
+  const [isEditing, setIsEditing] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [verificationCode, setVerificationCode] = useState("");
+  const [showVerification, setShowVerification] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState<{
+    type: "error" | "success";
+    text: string;
+  } | null>(null);
+
+  const isVerified = user?.mobileVerified !== null;
+  const hasPhone = user?.mobileNumber && user?.mobileCountryCode;
+  const displayPhone = hasPhone
+    ? `${user.mobileCountryCode}${user.mobileNumber}`
+    : "";
+
+  const handleUpdatePhone = async () => {
+    if (!phoneNumber) {
+      setMessage({ type: "error", text: "Please enter a mobile number" });
+      return;
+    }
+
+    setIsSubmitting(true);
+    setMessage(null);
+
+    try {
+      const res = await fetch("/api/user/mobile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mobileNumber: phoneNumber }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setMessage({
+          type: "error",
+          text: data.error || "Failed to update mobile number",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+
+      setMessage({
+        type: "success",
+        text: "Verification code sent to your mobile number",
+      });
+      setShowVerification(true);
+      setIsSubmitting(false);
+      mutate();
+    } catch (error) {
+      setMessage({ type: "error", text: "Network error. Please try again." });
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleVerifyCode = async () => {
+    if (!verificationCode) {
+      setMessage({ type: "error", text: "Please enter the verification code" });
+      return;
+    }
+
+    setIsSubmitting(true);
+    setMessage(null);
+
+    try {
+      const res = await fetch("/api/user/mobile/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: verificationCode }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setMessage({
+          type: "error",
+          text: data.error || "Failed to verify code",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+
+      setMessage({
+        type: "success",
+        text: "Mobile number verified successfully",
+      });
+      setShowVerification(false);
+      setIsEditing(false);
+      setVerificationCode("");
+      setPhoneNumber("");
+      setIsSubmitting(false);
+      mutate();
+    } catch (error) {
+      setMessage({ type: "error", text: "Network error. Please try again." });
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <Card className="mt-6">
+      <CardHeader className="pt-6">
+        <CardTitle>Mobile Number</CardTitle>
+      </CardHeader>
+      <CardContent className="py-6">
+        <p className="text-sm text-gray-500 mb-4">
+          Your mobile number is required for WhatsApp service access. Verify
+          your number to enable full features.
+        </p>
+
+        {!isEditing && hasPhone && (
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-medium">{displayPhone}</p>
+                <p
+                  className={`text-sm ${
+                    isVerified ? "text-green-600" : "text-amber-600"
+                  }`}
+                >
+                  {isVerified ? "✓ Verified" : "⚠ Not verified"}
+                </p>
+              </div>
+              <Button
+                onClick={() => {
+                  setIsEditing(true);
+                  setPhoneNumber(displayPhone);
+                }}
+                className="bg-orange-500 hover:bg-orange-600 text-white"
+              >
+                Change Number
+              </Button>
+            </div>
+            {!isVerified && (
+              <Button
+                onClick={() => {
+                  setShowVerification(true);
+                  handleUpdatePhone();
+                }}
+                className="w-full bg-green-600 hover:bg-green-700 text-white"
+              >
+                Verify Current Number
+              </Button>
+            )}
+          </div>
+        )}
+
+        {(isEditing || !hasPhone) && !showVerification && (
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="mobile" className="mb-2">
+                Mobile Number
+              </Label>
+              <div className="mt-1">
+                <input
+                  type="tel"
+                  id="mobile"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  placeholder="+1234567890"
+                  className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                />
+              </div>
+              <p className="mt-1 text-xs text-gray-500">
+                Include country code (e.g., +1 for US, +351 for Portugal)
+              </p>
+            </div>
+            {message && (
+              <p
+                className={`text-sm ${
+                  message.type === "error" ? "text-red-500" : "text-green-500"
+                }`}
+              >
+                {message.text}
+              </p>
+            )}
+            <div className="flex gap-2">
+              <Button
+                onClick={handleUpdatePhone}
+                disabled={isSubmitting}
+                className="bg-orange-500 hover:bg-orange-600 text-white"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  "Send Verification Code"
+                )}
+              </Button>
+              {isEditing && (
+                <Button
+                  onClick={() => {
+                    setIsEditing(false);
+                    setPhoneNumber("");
+                    setMessage(null);
+                  }}
+                  className="bg-gray-200 hover:bg-gray-300 text-gray-900"
+                >
+                  Cancel
+                </Button>
+              )}
+            </div>
+          </div>
+        )}
+
+        {showVerification && (
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="verificationCode" className="mb-2">
+                Verification Code
+              </Label>
+              <Input
+                id="verificationCode"
+                type="text"
+                value={verificationCode}
+                onChange={(e) => setVerificationCode(e.target.value)}
+                placeholder="Enter 6-digit code"
+                maxLength={6}
+              />
+              <p className="mt-1 text-xs text-gray-500">
+                Enter the 6-digit code sent to your mobile number
+              </p>
+            </div>
+            {message && (
+              <p
+                className={`text-sm ${
+                  message.type === "error" ? "text-red-500" : "text-green-500"
+                }`}
+              >
+                {message.text}
+              </p>
+            )}
+            <div className="flex gap-2">
+              <Button
+                onClick={handleVerifyCode}
+                disabled={isSubmitting}
+                className="bg-green-600 hover:bg-green-700 text-white"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Verifying...
+                  </>
+                ) : (
+                  "Verify Code"
+                )}
+              </Button>
+              <Button
+                onClick={() => {
+                  setShowVerification(false);
+                  setVerificationCode("");
+                  setMessage(null);
+                }}
+                className="bg-gray-200 hover:bg-gray-300 text-gray-900"
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

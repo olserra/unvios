@@ -17,6 +17,11 @@ export const users = pgTable("users", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
   deletedAt: timestamp("deleted_at"),
+  mobileCountryCode: varchar("mobile_country_code", { length: 10 }),
+  mobileNumber: varchar("mobile_number", { length: 20 }),
+  mobileVerified: timestamp("mobile_verified"),
+  mobileVerificationToken: varchar("mobile_verification_token", { length: 10 }),
+  mobileVerificationExpires: timestamp("mobile_verification_expires"),
 });
 
 export const teams = pgTable("teams", {

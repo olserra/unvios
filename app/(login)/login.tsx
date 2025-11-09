@@ -10,6 +10,9 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { TiSpiral } from "react-icons/ti";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
+import "./phone-input.css";
 // We'll call API routes for sign-in / sign-up instead of the server actions
 // because the project was importing a non-existent `useActionState` hook.
 
@@ -108,6 +111,39 @@ function PasswordRequirements({ password }: { password: string }) {
   );
 }
 
+function PhoneNumberField({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <div>
+      <Label
+        htmlFor="mobileNumber"
+        className="block text-sm font-medium text-gray-700"
+      >
+        Mobile Number
+      </Label>
+      <div className="mt-1">
+        <PhoneInput
+          international
+          defaultCountry="US"
+          value={value}
+          onChange={(val) => onChange(val || "")}
+          className="appearance-none rounded-full relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm"
+          placeholder="Enter your mobile number"
+        />
+        <input type="hidden" name="mobileNumber" value={value} />
+      </div>
+      <p className="mt-1 text-xs text-gray-500">
+        Required for WhatsApp service access and verification
+      </p>
+    </div>
+  );
+}
+
 function GoogleSignInButton() {
   return (
     <Button
@@ -138,6 +174,7 @@ export function Login({ mode = "signin" }: { mode?: "signin" | "signup" }) {
   const [state, setState] = useState<ActionState | null>(null);
   const [pending, setPending] = useState(false);
   const [password, setPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   // Switch to sign-in view if email is already registered
   useEffect(() => {
@@ -201,6 +238,9 @@ export function Login({ mode = "signin" }: { mode?: "signin" | "signup" }) {
             mode={mode}
             viewMode={viewMode}
           />
+          {viewMode === "signup" && (
+            <PhoneNumberField value={phoneNumber} onChange={setPhoneNumber} />
+          )}
           {state?.error && (
             <div className="text-red-500 text-sm">{state.error}</div>
           )}

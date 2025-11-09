@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { User } from "@/lib/db/schema";
 import {
   Activity,
   Bookmark,
@@ -10,7 +11,10 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useSWR from "swr";
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function DashboardLayout({
   children,
@@ -19,6 +23,18 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [showMobilePrompt, setShowMobilePrompt] = useState(false);
+
+  const { data: user } = useSWR<User>("/api/user", fetcher);
+
+  useEffect(() => {
+    // Check if user has mobile number
+    if (user && !user.mobileNumber && pathname !== "/dashboard/general") {
+      setShowMobilePrompt(true);
+    } else {
+      setShowMobilePrompt(false);
+    }
+  }, [user, pathname]);
 
   const navItems = [
     { href: "/dashboard/memories", icon: Bookmark, label: "Memories" },
@@ -60,7 +76,59 @@ export default function DashboardLayout({
         </aside>
 
         {/* Main content */}
-        <main className="flex-1 overflow-y-auto p-0 lg:p-4">{children}</main>
+        <main className="flex-1 overflow-y-auto p-0 lg:p-4">
+          {showMobilePrompt && (
+            <div className="bg-amber-50 border-l-4 border-amber-400 p-4 mb-4 mx-4 lg:mx-0">
+              <div className="flex items-start">
+                <div className="flex-shrink-0">
+                  <svg
+                    className="h-5 w-5 text-amber-400"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <div className="ml-3 flex-1">
+                  <p className="text-sm text-amber-700">
+                    Please add and verify your mobile number to access WhatsApp
+                    services.
+                  </p>
+                  <Link href="/dashboard/general">
+                    <Button
+                      className="mt-2 bg-amber-600 hover:bg-amber-700 text-white text-sm"
+                      size="sm"
+                    >
+                      Add Mobile Number
+                    </Button>
+                  </Link>
+                </div>
+                <button
+                  onClick={() => setShowMobilePrompt(false)}
+                  className="ml-auto flex-shrink-0 text-amber-500 hover:text-amber-600"
+                >
+                  <svg
+                    className="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          )}
+          {children}
+        </main>
       </div>
     </div>
   );

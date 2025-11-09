@@ -96,10 +96,11 @@ const signUpSchema = z.object({
       "Password must contain at least one uppercase letter, one lowercase letter, and one number"
     ),
   inviteId: z.string().optional(),
+  mobileNumber: z.string().min(1, "Mobile number is required"),
 });
 
 export const signUp = validatedAction(signUpSchema, async (data, formData) => {
-  const { email, password } = data;
+  const { email, password, mobileNumber } = data;
 
   const existingUser = await db
     .select()
@@ -118,10 +119,28 @@ export const signUp = validatedAction(signUpSchema, async (data, formData) => {
 
   const passwordHash = await hashPassword(password);
 
+  // Parse phone number to extract country code and number
+  // Format expected: +12345678901
+  const phoneMatch = mobileNumber.match(/^\+(\d{1,5})(\d+)$/);
+  const countryCode = phoneMatch ? `+${phoneMatch[1]}` : "+1";
+  const phoneNumber = phoneMatch
+    ? phoneMatch[2]
+    : mobileNumber.replace(/^\+/, "");
+
+  // Generate 6-digit verification code
+  const verificationToken = Math.floor(
+    100000 + Math.random() * 900000
+  ).toString();
+  const verificationExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+
   const newUser: NewUser = {
     email,
     passwordHash,
     role: "owner", // Default role, will be overridden if there's an invitation
+    mobileCountryCode: countryCode,
+    mobileNumber: phoneNumber,
+    mobileVerificationToken: verificationToken,
+    mobileVerificationExpires: verificationExpires,
   };
 
   const [createdUser] = await db.insert(users).values(newUser).returning();
