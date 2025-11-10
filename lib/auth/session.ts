@@ -1,43 +1,42 @@
 import { NewUser } from "@/lib/db/schema";
 import { compare, hash } from "bcryptjs";
-import { randomBytes } from "crypto";
-import { SignJWT, jwtVerify } from "jose";
+import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { cache } from "react";
 
-// Ensure we have a non-empty secret to sign tokens with. jose (used by SignJWT)
-// will throw a "Zero-length key is not supported" error when given an empty
-// key. Prefer `NEXTAUTH_SECRET` if present (common convention). Auto-generate
-// a temporary secret in development to make local work easier (sessions won't
-// persist across restarts when auto-generated).
-const rawAuthSecret =
-  process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET ?? "";
-let authSecretToUse = rawAuthSecret;
-if (!rawAuthSecret) {
-  if (process.env.NODE_ENV === "production") {
+// Initialize secret key once and reuse it
+let globalSecret: string | undefined;
+
+function getOrCreateSecret() {
+  if (globalSecret) {
+    return globalSecret;
+  }
+
+  // Get auth secret from environment
+  const rawAuthSecret =
+    process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET ?? "";
+
+  if (process.env.NODE_ENV === "production" && !rawAuthSecret) {
     throw new Error(
       "AUTH_SECRET environment variable is required in production to sign session tokens"
     );
-  } else {
-    // Dev fallback: try to persist the generated secret across module reloads
-    // by storing it on globalThis. This avoids signature verification failures
-    // when the module is reloaded during development (HMR).
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const g = globalThis as any;
-    if (g.__UNVIOS_DEV_AUTH_SECRET) {
-      authSecretToUse = g.__UNVIOS_DEV_AUTH_SECRET as string;
-    } else {
-      authSecretToUse = randomBytes(32).toString("hex");
-  g.__UNVIOS_DEV_AUTH_SECRET = authSecretToUse;
-      // eslint-disable-next-line no-console
-      console.warn(
-        "Warning: AUTH_SECRET is not set. Using an auto-generated secret for development. Set AUTH_SECRET in your .env to persist sessions across restarts."
-      );
-    }
   }
+
+  // Use environment secret or generate for development
+  if (rawAuthSecret) {
+    globalSecret = rawAuthSecret;
+  } else {
+    // Generate a secure random secret for development
+    const randomBytes = crypto.getRandomValues(new Uint8Array(32));
+    globalSecret = Buffer.from(randomBytes).toString("base64");
+    console.warn(
+      "Warning: AUTH_SECRET is not set. Using an auto-generated secret for development. Set AUTH_SECRET in your .env to persist sessions across restarts."
+    );
+  }
+
+  return globalSecret;
 }
 
-const key = new TextEncoder().encode(authSecretToUse);
 const SALT_ROUNDS = 10;
 
 export async function hashPassword(password: string) {
@@ -54,21 +53,42 @@ export async function comparePasswords(
 type SessionData = {
   user: { id: number };
   expires: string;
+  exp?: number;
+  iat?: number;
 };
 
 export async function signToken(payload: SessionData) {
-  return await new SignJWT(payload)
-    .setProtectedHeader({ alg: "HS256" })
-    .setIssuedAt()
-    .setExpirationTime("1 day from now")
-    .sign(key);
+  try {
+    const secretKey = getOrCreateSecret();
+    return jwt.sign(payload, secretKey, {
+      algorithm: "HS256",
+      expiresIn: "2h",
+    });
+  } catch (e) {
+    console.error("Error signing token:", e);
+    throw e;
+  }
 }
 
 export async function verifyToken(input: string) {
-  const { payload } = await jwtVerify(input, key, {
-    algorithms: ["HS256"],
-  });
-  return payload as SessionData;
+  if (!input) {
+    return null;
+  }
+  try {
+    const secretKey = getOrCreateSecret();
+
+    // Verify and decode the token
+    const payload = jwt.verify(input, secretKey, {
+      algorithms: ["HS256"],
+    });
+
+    // jwt.verify will handle expiration automatically
+    return payload as SessionData;
+  } catch (error: any) {
+    // Invalid token
+    console.debug("Token verification failed:", error?.code);
+    return null;
+  }
 }
 
 export const getSession = cache(async () => {
