@@ -78,6 +78,58 @@
 
 **Failure mode**: Chat endpoint returns 500 error
 
+#### `LLM_API_KEY`
+**Purpose**: Bearer token for LLM API
+
+**Aliases**: Also checks `OPENAI_API_KEY`
+
+**Example**: `sk-xxxxxxxxxxxxxxxxxxxxx`
+
+**Used in**: LLM chat requests
+
+**Fallback**: Returns error message if missing
+
+---
+
+### SMS/Twilio (Mobile Verification)
+
+#### `TWILIO_ACCOUNT_SID`
+**Purpose**: Twilio account identifier for SMS verification
+
+**Format**: Starts with `AC...`
+
+**Example**: `ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
+
+**Used in**: `lib/firebase-admin.ts` - `sendVerificationSMS()`
+
+**Fallback**: Codes logged to console (development mode)
+
+**Setup Guide**: See `.github/instructions/twilio-sms-setup.md`
+
+#### `TWILIO_AUTH_TOKEN`
+**Purpose**: Twilio authentication token
+
+**Example**: `your_auth_token_here`
+
+**Used in**: Twilio API authentication
+
+**Fallback**: Codes logged to console (development mode)
+
+#### `TWILIO_PHONE_NUMBER`
+**Purpose**: Twilio phone number to send SMS from
+
+**Format**: E.164 format (e.g., `+12345678900`)
+
+**Example**: `+12025551234`
+
+**Used in**: SMS sender number
+
+**Fallback**: Codes logged to console (development mode)
+
+**Note**: All three Twilio variables must be set for SMS to work. If any are missing, the system falls back to console logging for development.
+
+---
+
 **Detection**: OpenAI-style if URL contains:
 - `api.openai.com`
 - `/v1/chat/completions`
