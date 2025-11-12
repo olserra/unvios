@@ -18,7 +18,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { User } from "@/lib/db/schema";
+import { useUser } from "@/contexts/UserContext";
 import {
   Activity,
   Bookmark,
@@ -33,18 +33,14 @@ import { useRouter } from "next/navigation";
 import { Suspense, useCallback, useMemo, useState } from "react";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { TiSpiral } from "react-icons/ti";
-import useSWR, { mutate } from "swr";
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 function UserMenu() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { data: user } = useSWR<User>("/api/user", fetcher);
+  const { user } = useUser();
   const router = useRouter();
 
   const handleSignOut = useCallback(async () => {
     await signOut();
-    mutate("/api/user");
     router.push("/");
   }, [router]);
 
@@ -218,7 +214,7 @@ function UserMenu() {
 }
 
 function Logo() {
-  const { data: user } = useSWR<User>("/api/user", fetcher);
+  const { user } = useUser();
 
   const logoContent = (
     <div className="flex items-center gap-2">

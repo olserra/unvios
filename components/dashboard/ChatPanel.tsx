@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { AlertCircle, Brain, Send, Sparkles } from "lucide-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 type Msg = {
   id: string;
@@ -16,6 +16,52 @@ function now() {
     minute: "2-digit",
   });
 }
+
+const MessageBubble = memo(({ message }: { message: Msg }) => {
+  return (
+    <div
+      className={`flex ${
+        message.role === "user" ? "justify-end" : "justify-start"
+      }`}
+    >
+      <div
+        className={`max-w-[85%] sm:max-w-[75%] ${
+          message.role === "user"
+            ? "bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-2xl rounded-tr-sm"
+            : "bg-white border border-gray-200 rounded-2xl rounded-tl-sm"
+        }`}
+      >
+        {message.role === "assistant" && (
+          <div className="flex items-center gap-2 px-4 pt-3 pb-2 border-b border-gray-100">
+            <div className="w-6 h-6 bg-orange-100 rounded-full flex items-center justify-center">
+              <Brain className="w-3.5 h-3.5 text-orange-600" />
+            </div>
+            <span className="text-xs font-medium text-gray-700">
+              Unvios
+            </span>
+          </div>
+        )}
+        <div className="px-4 py-3">
+          <div
+            className={`whitespace-pre-wrap text-sm leading-relaxed ${
+              message.role === "user" ? "text-white" : "text-gray-900"
+            }`}
+          >
+            {message.text}
+          </div>
+          <div
+            className={`text-xs mt-2 ${
+              message.role === "user" ? "text-orange-100" : "text-gray-400"
+            }`}
+          >
+            {message.time}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+});
+MessageBubble.displayName = "MessageBubble";
 
 export default function ChatPanel() {
   const [text, setText] = useState("");
@@ -168,47 +214,7 @@ export default function ChatPanel() {
           )}
 
           {messages.map((m) => (
-            <div
-              key={m.id}
-              className={`flex ${
-                m.role === "user" ? "justify-end" : "justify-start"
-              }`}
-            >
-              <div
-                className={`max-w-[85%] sm:max-w-[75%] ${
-                  m.role === "user"
-                    ? "bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-2xl rounded-tr-sm"
-                    : "bg-white border border-gray-200 rounded-2xl rounded-tl-sm"
-                }`}
-              >
-                {m.role === "assistant" && (
-                  <div className="flex items-center gap-2 px-4 pt-3 pb-2 border-b border-gray-100">
-                    <div className="w-6 h-6 bg-orange-100 rounded-full flex items-center justify-center">
-                      <Brain className="w-3.5 h-3.5 text-orange-600" />
-                    </div>
-                    <span className="text-xs font-medium text-gray-700">
-                      Unvios
-                    </span>
-                  </div>
-                )}
-                <div className="px-4 py-3">
-                  <div
-                    className={`whitespace-pre-wrap text-sm leading-relaxed ${
-                      m.role === "user" ? "text-white" : "text-gray-900"
-                    }`}
-                  >
-                    {m.text}
-                  </div>
-                  <div
-                    className={`text-xs mt-2 ${
-                      m.role === "user" ? "text-orange-100" : "text-gray-400"
-                    }`}
-                  >
-                    {m.time}
-                  </div>
-                </div>
-              </div>
-            </div>
+            <MessageBubble key={m.id} message={m} />
           ))}
 
           {pending && (

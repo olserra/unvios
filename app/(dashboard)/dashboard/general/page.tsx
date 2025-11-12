@@ -6,14 +6,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ConfirmDialog from "@/components/ui/confirm-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { User } from "@/lib/db/schema";
+import { useUser } from "@/contexts/UserContext";
 import { customerPortalAction } from "@/lib/payments/actions";
 import { Download, Loader2, Trash2 } from "lucide-react";
 import { Suspense, useActionState, useState } from "react";
 import { TbCrown } from "react-icons/tb";
-import useSWR from "swr";
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 type ActionState = {
   name?: string;
@@ -70,7 +67,7 @@ function AccountForm({
 }
 
 function AccountFormWithData({ state }: { state: ActionState }) {
-  const { data: user } = useSWR<User>("/api/user", fetcher);
+  const { user } = useUser();
   return (
     <AccountForm
       state={state}
@@ -217,7 +214,7 @@ export default function GeneralPage() {
 }
 
 function SubscriptionCard() {
-  const { data: userData } = useSWR<any>("/api/user", fetcher);
+  const { user } = useUser();
 
   return (
     <Card className="mb-8">
@@ -229,11 +226,11 @@ function SubscriptionCard() {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div className="mb-4 sm:mb-0">
               <p className="font-medium">
-                Current Plan: {userData?.planName || "Free"}
+                Current Plan: {user?.planName || "Free"}
               </p>
               <p className="text-sm text-muted-foreground">
                 {(() => {
-                  const status = userData?.subscriptionStatus;
+                  const status = user?.subscriptionStatus;
                   if (status === "active") return "Billed monthly";
                   if (status === "trialing") return "Trial period";
                   return "No active subscription";
@@ -257,7 +254,7 @@ function SubscriptionCard() {
 }
 
 function MobileNumberCard() {
-  const { data: user, mutate } = useSWR<User>("/api/user", fetcher);
+  const { user, mutate } = useUser();
   const [isEditing, setIsEditing] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [verificationCode, setVerificationCode] = useState("");

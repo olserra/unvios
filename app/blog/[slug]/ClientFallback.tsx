@@ -85,12 +85,14 @@ export default function ClientFallback() {
         </div>
 
         {post.image && (
-          <div className="mb-8 rounded-2xl overflow-hidden">
-            <img
+          <div className="mb-8 rounded-2xl overflow-hidden relative" style={{ height: "400px" }}>
+            <Image
               src={post.image}
               alt={post.imageAlt || post.title}
-              className="w-full h-auto object-cover"
-              style={{ maxHeight: "400px" }}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 800px, 1000px"
+              priority
             />
           </div>
         )}

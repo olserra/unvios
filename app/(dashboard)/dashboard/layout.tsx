@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { User } from "@/lib/db/schema";
+import { useUser } from "@/contexts/UserContext";
 import {
   Activity,
   Bookmark,
@@ -11,10 +11,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import useSWR from "swr";
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+import { useEffect, useMemo, useState } from "react";
 
 export default function DashboardLayout({
   children,
@@ -25,7 +22,7 @@ export default function DashboardLayout({
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showMobilePrompt, setShowMobilePrompt] = useState(false);
 
-  const { data: user } = useSWR<User>("/api/user", fetcher);
+  const { user } = useUser();
 
   useEffect(() => {
     // Check if user has mobile number
@@ -36,13 +33,13 @@ export default function DashboardLayout({
     }
   }, [user, pathname]);
 
-  const navItems = [
+  const navItems = useMemo(() => [
     { href: "/dashboard/memories", icon: Bookmark, label: "Memories" },
     { href: "/dashboard/chat", icon: MessageSquare, label: "Chat" },
     { href: "/dashboard/metrics", icon: Activity, label: "Metrics" },
     { href: "/dashboard/security", icon: Shield, label: "Security" },
     { href: "/dashboard/general", icon: Settings, label: "General" },
-  ];
+  ], []);
 
   return (
     <div className="flex flex-col min-h-[calc(100dvh-68px)] max-w-7xl mx-auto w-full">

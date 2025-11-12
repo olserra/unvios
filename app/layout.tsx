@@ -2,6 +2,7 @@ import AnalyticsGate from "@/components/analytics/analytics-gate";
 import CookieConsent from "@/components/ui/cookie-consent";
 import Footer from "@/components/ui/footer";
 import Header from "@/components/ui/header";
+import { UserProvider } from "@/contexts/UserContext";
 import { getUser } from "@/lib/db/queries";
 import type { Metadata, Viewport } from "next";
 import { Manrope } from "next/font/google";
@@ -66,8 +67,10 @@ export default async function RootLayout({
             },
           }}
         >
-          <Header />
-          {children}
+          <UserProvider>
+            <Header />
+            {children}
+          </UserProvider>
         </SWRConfig>
         {/* show public footer only when there is no authenticated user */}
         {!user && <Footer />}
