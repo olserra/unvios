@@ -1,6 +1,7 @@
 "use client";
 
 import { getAllPosts, getPostBySlug } from "@/lib/blog";
+import NextImage from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -86,7 +87,7 @@ export default function ClientFallback() {
 
         {post.image && (
           <div className="mb-8 rounded-2xl overflow-hidden relative" style={{ height: "400px" }}>
-            <Image
+            <NextImage
               src={post.image}
               alt={post.imageAlt || post.title}
               fill

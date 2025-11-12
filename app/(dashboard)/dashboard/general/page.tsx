@@ -214,8 +214,6 @@ export default function GeneralPage() {
 }
 
 function SubscriptionCard() {
-  const { user } = useUser();
-
   return (
     <Card className="mb-8">
       <CardHeader className="pt-6">
@@ -225,16 +223,9 @@ function SubscriptionCard() {
         <div className="space-y-4">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div className="mb-4 sm:mb-0">
-              <p className="font-medium">
-                Current Plan: {user?.planName || "Free"}
-              </p>
+              <p className="font-medium">Current Plan: Free</p>
               <p className="text-sm text-muted-foreground">
-                {(() => {
-                  const status = user?.subscriptionStatus;
-                  if (status === "active") return "Billed monthly";
-                  if (status === "trialing") return "Trial period";
-                  return "No active subscription";
-                })()}
+                No active subscription
               </p>
             </div>
             <form action={customerPortalAction}>

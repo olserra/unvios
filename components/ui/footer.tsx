@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { TiSpiral } from "react-icons/ti";
-// using simple emoji for social icons to avoid deprecated lucide exports
+import { FaLinkedin, FaInstagram, FaXTwitter } from "react-icons/fa6";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -116,9 +116,7 @@ export default function Footer() {
                 className="text-white transition-colors hover:text-orange-400"
                 aria-label="Unvios on Twitter"
               >
-                <span aria-hidden className="text-2xl">
-                  🐦
-                </span>
+                <FaXTwitter className="w-5 h-5" />
                 <span className="sr-only">Twitter</span>
               </a>
               <a
@@ -128,22 +126,18 @@ export default function Footer() {
                 className="text-white transition-colors hover:text-orange-400"
                 aria-label="Unvios on LinkedIn"
               >
-                <span aria-hidden className="text-2xl">
-                  💼
-                </span>
+                <FaLinkedin className="w-5 h-5" />
                 <span className="sr-only">LinkedIn</span>
               </a>
               <a
-                href="https://github.com"
+                href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white transition-colors hover:text-orange-400"
-                aria-label="Unvios on GitHub"
+                aria-label="Unvios on Instagram"
               >
-                <span aria-hidden className="text-2xl">
-                  🐙
-                </span>
-                <span className="sr-only">GitHub</span>
+                <FaInstagram className="w-5 h-5" />
+                <span className="sr-only">Instagram</span>
               </a>
             </div>
           </div>
