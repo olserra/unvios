@@ -7,8 +7,17 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { User } from "@/lib/db/schema";
 import {
   Activity,
@@ -17,6 +26,7 @@ import {
   MessageSquare,
   Settings,
   Shield,
+  X,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -28,7 +38,7 @@ import useSWR, { mutate } from "swr";
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 function UserMenu() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { data: user } = useSWR<User>("/api/user", fetcher);
   const router = useRouter();
 
@@ -37,9 +47,10 @@ function UserMenu() {
     mutate("/api/user");
     router.push("/");
   }
+
   if (!user) {
     // Desktop: keep inline Pricing + Sign Up
-    // Mobile: provide a dropdown with Sign In / Sign Up / Pricing
+    // Mobile: provide a sheet menu
     return (
       <>
         <div className="hidden lg:flex items-center space-x-4">
@@ -54,39 +65,55 @@ function UserMenu() {
           </Button>
         </div>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button
-              aria-label="Open menu"
-              className="p-2 rounded-md lg:hidden text-gray-700 hover:bg-gray-100"
-            >
-              <HiOutlineMenuAlt3 className="h-6 w-6" />
-            </button>
-          </DropdownMenuTrigger>
+        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+          <SheetTrigger
+            aria-label="Open menu"
+            className="p-2 rounded-md lg:hidden text-gray-700 hover:bg-gray-100 transition-colors"
+          >
+            <HiOutlineMenuAlt3 className="h-6 w-6" />
+          </SheetTrigger>
 
-          <DropdownMenuContent align="end" className="flex flex-col gap-1 w-56">
-            <DropdownMenuItem className="cursor-pointer">
-              <Link href="/sign-in" className="flex w-full items-center">
-                <span>Sign In</span>
-              </Link>
-            </DropdownMenuItem>
+          <SheetContent side="right">
+            <SheetHeader className="border-b-0">
+              <div className="flex items-center justify-between">
+                <SheetTitle>Menu</SheetTitle>
+                <SheetClose className="p-2 rounded-md hover:bg-gray-100 transition-colors">
+                  <X className="h-5 w-5 text-gray-500" />
+                </SheetClose>
+              </div>
+            </SheetHeader>
 
-            <DropdownMenuItem className="cursor-pointer">
-              <Link href="/sign-up" className="flex w-full items-center">
-                <span>Sign Up</span>
+            <nav className="flex flex-col gap-1 px-6 py-4">
+              <Link
+                href="/sign-in"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+              >
+                <span className="font-medium">Sign In</span>
               </Link>
-            </DropdownMenuItem>
 
-            <DropdownMenuItem className="cursor-pointer">
-              <Link href="/pricing" className="flex w-full items-center">
-                <span>Pricing</span>
+              <Link
+                href="/sign-up"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+              >
+                <span className="font-medium">Sign Up</span>
               </Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+
+              <Link
+                href="/pricing"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+              >
+                <span className="font-medium">Pricing</span>
+              </Link>
+            </nav>
+          </SheetContent>
+        </Sheet>
       </>
     );
   }
+
   // nav items to show in the mobile menu (same as sidebar)
   const navItems = [
     { href: "/dashboard/memories", icon: Bookmark, label: "Memories" },
@@ -97,19 +124,11 @@ function UserMenu() {
   ];
 
   return (
-    <DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-      <DropdownMenuTrigger asChild>
-        {/* Show menu icon on mobile, avatar on desktop */}
-        <div className="flex items-center">
-          <span
-            aria-label="Open menu"
-            data-onboarding="mobile-menu"
-            className="p-2 rounded-md lg:hidden text-gray-700 hover:bg-gray-100 cursor-pointer"
-          >
-            <HiOutlineMenuAlt3 className="h-6 w-6" />
-          </span>
-
-          <div className="hidden lg:block">
+    <>
+      {/* Desktop: Avatar dropdown */}
+      <div className="hidden lg:block">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
             <Avatar className="cursor-pointer size-9">
               <AvatarImage alt={user.name || ""} />
               <AvatarFallback>
@@ -119,38 +138,78 @@ function UserMenu() {
                   .join("")}
               </AvatarFallback>
             </Avatar>
-          </div>
-        </div>
-      </DropdownMenuTrigger>
+          </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end" className="flex flex-col gap-1 w-56">
-        {/* Sidebar nav items */}
-        {navItems.map((item) => (
-          <DropdownMenuItem
-            key={item.href}
-            className="lg:hidden cursor-pointer"
-          >
-            <Link
-              href={item.href}
-              onClick={() => setIsMenuOpen(false)}
-              className="flex w-full items-center"
-            >
-              <item.icon className="mr-2 h-4 w-4" />
-              <span>{item.label}</span>
-            </Link>
-          </DropdownMenuItem>
-        ))}
-
-        <form action={handleSignOut} className="w-full">
-          <button type="submit" className="flex w-full">
-            <DropdownMenuItem className="w-full flex-1 cursor-pointer">
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Sign out</span>
+          <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuItem className="cursor-pointer">
+              <Link href="/dashboard/general" className="flex w-full items-center">
+                <Settings className="mr-2 h-4 w-4" />
+                <span>Settings</span>
+              </Link>
             </DropdownMenuItem>
-          </button>
-        </form>
-      </DropdownMenuContent>
-    </DropdownMenu>
+
+            <DropdownMenuSeparator />
+
+            <form action={handleSignOut} className="w-full">
+              <button type="submit" className="flex w-full">
+                <DropdownMenuItem className="w-full flex-1 cursor-pointer text-red-600">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Sign out</span>
+                </DropdownMenuItem>
+              </button>
+            </form>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      {/* Mobile: Sheet menu */}
+      <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+        <SheetTrigger
+          aria-label="Open menu"
+          data-onboarding="mobile-menu"
+          className="p-2 rounded-md lg:hidden text-gray-700 hover:bg-gray-100 transition-colors"
+        >
+          <HiOutlineMenuAlt3 className="h-6 w-6" />
+        </SheetTrigger>
+
+        <SheetContent side="right">
+          <SheetHeader className="border-b-0">
+            <div className="flex items-center justify-between">
+              <SheetTitle>Menu</SheetTitle>
+              <SheetClose className="p-2 rounded-md hover:bg-gray-100 transition-colors">
+                <X className="h-5 w-5 text-gray-500" />
+              </SheetClose>
+            </div>
+          </SheetHeader>
+
+          <nav className="flex flex-col gap-1 px-6 py-4">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+              >
+                <item.icon className="h-5 w-5 text-gray-500" />
+                <span className="font-medium">{item.label}</span>
+              </Link>
+            ))}
+
+            <div className="mt-4 pt-4 border-t border-gray-200">
+              <form action={handleSignOut} className="w-full">
+                <button
+                  type="submit"
+                  className="flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition-colors w-full"
+                >
+                  <LogOut className="h-5 w-5" />
+                  <span className="font-medium">Sign out</span>
+                </button>
+              </form>
+            </div>
+          </nav>
+        </SheetContent>
+      </Sheet>
+    </>
   );
 }
 
@@ -182,7 +241,7 @@ function Logo() {
 
 export default function Header() {
   return (
-    <header className="border-b border-gray-200">
+    <header className="border-b border-gray-200 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
         <Suspense fallback={<div className="flex items-center h-6" />}>
           <Logo />

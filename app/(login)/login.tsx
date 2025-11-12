@@ -132,7 +132,13 @@ function PhoneNumberField({
           defaultCountry="US"
           value={value}
           onChange={(val) => onChange(val || "")}
-          className="appearance-none rounded-full relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm"
+          countrySelectProps={{
+            'aria-label': 'Select country code',
+          }}
+          numberInputProps={{
+            'aria-label': 'Phone number',
+          }}
+          className="PhoneInput"
           placeholder="Enter your mobile number"
         />
         <input type="hidden" name="mobileNumber" value={value} />

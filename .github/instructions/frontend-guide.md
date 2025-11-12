@@ -1,6 +1,6 @@
-# Frontend — How Memories & Tags Work
+# Frontend Development Guide
 
-This document explains how the frontend currently handles memories and tags, where to find the relevant components, the data shapes expected by the API, and integration notes for the backend team. Use this as the source-of-truth when integrating the frontend with a backend agent.
+This guide covers UI components, client-side patterns, and frontend-backend integration for the Unvios memory system.
 
 ## High-level overview
 

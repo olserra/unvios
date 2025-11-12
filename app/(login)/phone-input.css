@@ -2,6 +2,7 @@
 .PhoneInput {
   display: flex;
   align-items: center;
+  gap: 0.5rem;
 }
 
 .PhoneInputInput {
@@ -15,6 +16,7 @@
   font-size: 0.875rem;
   line-height: 1.25rem;
   color: #111827;
+  transition: all 0.2s ease;
 }
 
 .PhoneInputInput:focus {
@@ -25,30 +27,85 @@
 }
 
 .PhoneInputInput::placeholder {
-  color: #6b7280;
+  color: #9ca3af;
 }
 
 .PhoneInputCountry {
-  margin-right: 0.5rem;
-  padding: 0.5rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
   border: 1px solid #d1d5db;
   border-radius: 9999px;
   background-color: white;
+  transition: all 0.2s ease;
+}
+
+.PhoneInputCountry:hover {
+  border-color: #9ca3af;
+}
+
+.PhoneInputCountry:focus-within {
+  outline: 2px solid #f97316;
+  outline-offset: 2px;
+  border-color: #f97316;
 }
 
 .PhoneInputCountrySelect {
   border: none;
   background: transparent;
   cursor: pointer;
-  padding: 0.25rem;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  appearance: none;
+  font-size: 0.875rem;
+  color: #111827;
+  font-weight: 500;
 }
 
 .PhoneInputCountrySelect:focus {
   outline: none;
 }
 
+.PhoneInputCountrySelectArrow {
+  display: none;
+}
+
+/* Remove all borders and shadows from flag icons */
 .PhoneInputCountryIcon {
   width: 1.5rem;
-  height: 1.5rem;
-  margin-right: 0.25rem;
+  height: 1rem;
+  display: block;
+  flex-shrink: 0;
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: none !important;
+  border: none !important;
+  background: none !important;
+}
+
+.PhoneInputCountryIcon--border {
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
+}
+
+.PhoneInputCountryIcon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.PhoneInputCountryIconImg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: none !important;
+  box-shadow: none !important;
 }
