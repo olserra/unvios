@@ -30,7 +30,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Suspense, useState } from "react";
+import { Suspense, useCallback, useMemo, useState } from "react";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { TiSpiral } from "react-icons/ti";
 import useSWR, { mutate } from "swr";
@@ -42,11 +42,23 @@ function UserMenu() {
   const { data: user } = useSWR<User>("/api/user", fetcher);
   const router = useRouter();
 
-  async function handleSignOut() {
+  const handleSignOut = useCallback(async () => {
     await signOut();
     mutate("/api/user");
     router.push("/");
-  }
+  }, [router]);
+
+  const closeMobileMenu = useCallback(() => {
+    setIsMobileMenuOpen(false);
+  }, []);
+
+  const navItems = useMemo(() => [
+    { href: "/dashboard/memories", icon: Bookmark, label: "Memories" },
+    { href: "/dashboard/chat", icon: MessageSquare, label: "Chat" },
+    { href: "/dashboard/metrics", icon: Activity, label: "Metrics" },
+    { href: "/dashboard/security", icon: Shield, label: "Security" },
+    { href: "/dashboard/general", icon: Settings, label: "General" },
+  ], []);
 
   if (!user) {
     // Desktop: keep inline Pricing + Sign Up
@@ -86,7 +98,7 @@ function UserMenu() {
             <nav className="flex flex-col gap-1 px-6 py-4">
               <Link
                 href="/sign-in"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={closeMobileMenu}
                 className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
               >
                 <span className="font-medium">Sign In</span>
@@ -94,7 +106,7 @@ function UserMenu() {
 
               <Link
                 href="/sign-up"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={closeMobileMenu}
                 className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
               >
                 <span className="font-medium">Sign Up</span>
@@ -102,7 +114,7 @@ function UserMenu() {
 
               <Link
                 href="/pricing"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={closeMobileMenu}
                 className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
               >
                 <span className="font-medium">Pricing</span>
@@ -115,14 +127,6 @@ function UserMenu() {
   }
 
   // nav items to show in the mobile menu (same as sidebar)
-  const navItems = [
-    { href: "/dashboard/memories", icon: Bookmark, label: "Memories" },
-    { href: "/dashboard/chat", icon: MessageSquare, label: "Chat" },
-    { href: "/dashboard/metrics", icon: Activity, label: "Metrics" },
-    { href: "/dashboard/security", icon: Shield, label: "Security" },
-    { href: "/dashboard/general", icon: Settings, label: "General" },
-  ];
-
   return (
     <>
       {/* Desktop: Avatar dropdown */}
@@ -187,7 +191,7 @@ function UserMenu() {
               <Link
                 key={item.href}
                 href={item.href}
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={closeMobileMenu}
                 className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
               >
                 <item.icon className="h-5 w-5 text-gray-500" />

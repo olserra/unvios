@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { AlertCircle, Brain, Send, Sparkles } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 type Msg = {
   id: string;
@@ -38,7 +38,7 @@ export default function ChatPanel() {
     }
   }, [text]);
 
-  async function sendMessage() {
+  const sendMessage = useCallback(async () => {
     const content = text.trim();
     if (!content) return;
     const userMsg: Msg = {
@@ -97,14 +97,28 @@ export default function ChatPanel() {
     } finally {
       setPending(false);
     }
-  }
+  }, [text]);
 
-  function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+  const onKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       void sendMessage();
     }
-  }
+  }, [sendMessage]);
+
+  const handleTextChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setText(e.target.value);
+  }, []);
+
+  const suggestions = useMemo(() => [
+    "What did I learn last week?",
+    "Show my work memories",
+    "Find ideas about design",
+  ], []);
+
+  const handleSuggestionClick = useCallback((suggestion: string) => {
+    setText(suggestion);
+  }, []);
 
   return (
     <div
@@ -139,14 +153,10 @@ export default function ChatPanel() {
                 organize, and recall information.
               </p>
               <div className="mt-6 grid gap-2 w-full max-w-sm">
-                {[
-                  "What did I learn last week?",
-                  "Show my work memories",
-                  "Find ideas about design",
-                ].map((suggestion) => (
+                {suggestions.map((suggestion) => (
                   <button
                     key={suggestion}
-                    onClick={() => setText(suggestion)}
+                    onClick={() => handleSuggestionClick(suggestion)}
                     className="text-sm text-left px-4 py-3 bg-white border border-gray-200 rounded-xl hover:border-orange-500 hover:bg-orange-50 transition-all"
                   >
                     <Sparkles className="w-4 h-4 inline mr-2 text-orange-600" />
@@ -240,7 +250,7 @@ export default function ChatPanel() {
               <textarea
                 ref={textareaRef}
                 value={text}
-                onChange={(e) => setText(e.target.value)}
+                onChange={handleTextChange}
                 onKeyDown={onKeyDown}
                 placeholder="Ask about your memories..."
                 className="flex-1 px-3 py-2 outline-none resize-none text-[15px] max-h-32 overflow-y-auto bg-transparent"

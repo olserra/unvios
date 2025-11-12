@@ -15,20 +15,21 @@ import {
   Tag,
   X,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, memo } from "react";
 import useSWR from "swr";
 import MemoryEditor from "./MemoryEditor";
 import OnboardingTour from "./OnboardingTour";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
-function MemoryTag({ children }: { readonly children: React.ReactNode }) {
+const MemoryTag = memo(({ children }: { readonly children: React.ReactNode }) => {
   return (
     <span className="text-xs bg-orange-50 text-orange-700 px-2 py-1 rounded-lg font-medium">
       {children}
     </span>
   );
-}
+});
+MemoryTag.displayName = "MemoryTag";
 
 function renderShortDate(dateVal: any) {
   try {
