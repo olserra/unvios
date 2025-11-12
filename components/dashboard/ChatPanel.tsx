@@ -123,9 +123,9 @@ export default function ChatPanel() {
     >
       <div
         ref={listRef}
-        className="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 space-y-4 scroll-smooth"
+        className="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-4 scroll-smooth"
       >
-        <div className="max-w-3xl mx-auto w-full pt-6 pb-24">
+        <div className="max-w-3xl mx-auto w-full pt-6 pb-24 space-y-6 sm:space-y-4">
           {messages.length === 0 && (
             <div className="flex flex-col items-center justify-center h-[60vh] text-center px-4">
               <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-4">
