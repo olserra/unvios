@@ -28,15 +28,15 @@ import {
   Shield,
   X,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Suspense, useCallback, useMemo, useState } from "react";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
-import { TiSpiral } from "react-icons/ti";
 
 function UserMenu() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { user } = useUser();
+  const { user, isLoading } = useUser();
   const router = useRouter();
 
   const handleSignOut = useCallback(async () => {
@@ -48,13 +48,21 @@ function UserMenu() {
     setIsMobileMenuOpen(false);
   }, []);
 
-  const navItems = useMemo(() => [
-    { href: "/dashboard/memories", icon: Bookmark, label: "Memories" },
-    { href: "/dashboard/chat", icon: MessageSquare, label: "Chat" },
-    { href: "/dashboard/metrics", icon: Activity, label: "Metrics" },
-    { href: "/dashboard/security", icon: Shield, label: "Security" },
-    { href: "/dashboard/general", icon: Settings, label: "General" },
-  ], []);
+  const navItems = useMemo(
+    () => [
+      { href: "/dashboard/memories", icon: Bookmark, label: "Memories" },
+      { href: "/dashboard/chat", icon: MessageSquare, label: "Chat" },
+      { href: "/dashboard/metrics", icon: Activity, label: "Metrics" },
+      { href: "/dashboard/security", icon: Shield, label: "Security" },
+      { href: "/dashboard/general", icon: Settings, label: "General" },
+    ],
+    []
+  );
+
+  // Show loading state while user data is being fetched
+  if (isLoading) {
+    return <div className="h-9 w-9 bg-gray-200 rounded-full animate-pulse" />;
+  }
 
   if (!user) {
     // Desktop: keep inline Pricing + Sign Up
@@ -142,7 +150,10 @@ function UserMenu() {
 
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuItem className="cursor-pointer">
-              <Link href="/dashboard/general" className="flex w-full items-center">
+              <Link
+                href="/dashboard/general"
+                className="flex w-full items-center"
+              >
                 <Settings className="mr-2 h-4 w-4" />
                 <span>Settings</span>
               </Link>
@@ -218,8 +229,14 @@ function Logo() {
 
   const logoContent = (
     <div className="flex items-center gap-2">
-      <TiSpiral className="w-8 h-8 text-orange-500" />
-      <span className="text-xl font-bold text-gray-900">Unvios</span>
+      <Image
+        src="/unvios-logo.png"
+        alt="Unvios logo"
+        width={30}
+        height={30}
+        className="object-contain"
+      />
+      <span className="text-xl font-bold text-gray-900">UNVIOS</span>
     </div>
   );
 

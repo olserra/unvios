@@ -1,6 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
-import { TiSpiral } from "react-icons/ti";
-import { FaLinkedin, FaInstagram, FaXTwitter } from "react-icons/fa6";
+import { FaInstagram, FaLinkedin, FaXTwitter } from "react-icons/fa6";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -94,8 +94,16 @@ export default function Footer() {
         <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex flex-col md:flex-row items-center gap-2">
             <div className="flex items-center gap-2">
-              <TiSpiral className="w-8 h-8 text-orange-500" />
-              <span className="text-xl font-bold text-white">Unvios</span>
+              <Image
+                src="/unvios-logo.png"
+                alt="Unvios logo"
+                width={24}
+                height={24}
+                className="object-contain"
+              />
+              <span className="text-xl font-bold text-white logo-font">
+                UNVIOS
+              </span>
             </div>
             <div className="text-xs text-gray-400 md:ml-3">
               Science-backed memory augmentation — neuro-inspired indexing, RAG,
