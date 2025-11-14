@@ -23,18 +23,21 @@ User Signs Up (app/(login)/actions.ts::signUp)
 ## 1. Key Management Strategy
 
 ### Private Key (Unvios side - secrets)
+
 - Stored in environment variable: `WEBHOOK_SIGNING_SECRET`
 - Used to HMAC-sign payloads before sending
 - Never shared or exposed
 - Should be rotated periodically
 
 ### Public Key (External backend side - public)
+
 - Derived from your private signing secret
 - You provide this to external backends for verification
 - They use it to validate webhook authenticity
 - Cannot be used to forge signatures
 
 ### Implementation: Use HMAC-SHA256 (no asymmetric keys needed - simpler and sufficient)
+
 - Private secret: 32+ character random string
 - Each webhook signed with: `HMAC-SHA256(payload, secret)`
 - External backend verifies by computing the same HMAC and comparing
@@ -46,12 +49,14 @@ User Signs Up (app/(login)/actions.ts::signUp)
 ### New route: `app/api/webhooks/events/route.ts`
 
 **Endpoint responsibilities**:
+
 - Trigger webhook dispatch when user signs up
 - Handle potential external backend failures gracefully
 - Queue retries for failed deliveries
 - Log webhook attempts for debugging
 
 ### Payload structure:
+
 ```json
 {
   "event": "user.created",
@@ -64,6 +69,7 @@ User Signs Up (app/(login)/actions.ts::signUp)
 ```
 
 ### Headers sent to external backend:
+
 - `X-Webhook-Signature`: HMAC-SHA256(payload, secret)
 - `X-Webhook-Timestamp`: ISO timestamp for replay attack prevention
 - `X-Webhook-Event`: Event type (e.g., "user.created")
@@ -74,12 +80,14 @@ User Signs Up (app/(login)/actions.ts::signUp)
 ## 3. Integration Points
 
 ### In `app/(login)/actions.ts` (signUp function):
+
 - After `db.insert(users).values(newUser).returning()` succeeds
 - Call new async webhook dispatch function
 - Use `Promise.allSettled()` to prevent webhook failures from blocking signup
 - Log errors but don't throw
 
 ### New utility: `lib/webhooks/dispatcher.ts`
+
 - Main async function: `dispatchUserCreatedWebhook(userId, email)`
 - Handles signature generation
 - Makes HTTP POST request to external endpoint
@@ -109,8 +117,8 @@ function verifyWebhookSignature(
 
   // Compute expected signature
   const data = `${timestamp}.${payload}`;
-  const computed = HMAC-SHA256(data, publicSecret);
-  
+  const computed = HMAC - SHA256(data, publicSecret);
+
   // Constant-time comparison (prevent timing attacks)
   return computed === signature;
 }
@@ -121,6 +129,7 @@ function verifyWebhookSignature(
 ## 5. Configuration & Environment Variables
 
 ### Add to `.env.local` and production:
+
 ```bash
 # Webhook configuration
 WEBHOOK_SIGNING_SECRET=<32+ char random string>
@@ -167,6 +176,7 @@ export const webhookLogs = pgTable("webhook_logs", {
 ## 8. External Backend Checklist
 
 Your external backend should:
+
 - ✅ Accept POST requests with JSON payload
 - ✅ Validate `X-Webhook-Signature` header using your public secret
 - ✅ Check `X-Webhook-Timestamp` is within 5 minutes
